@@ -800,6 +800,121 @@
           }
         }
       }
+    },
+    "/addteam/{userId}": {
+      "post": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Add Team",
+        "description": "Add team in the database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "requestBody": {
+          "description": "The team to create.",
+          "content": {
+            "application:json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTeam"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Team information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CreatedTeam"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Team creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Team creation failed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getteam/{teamId}/{userId}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Get Team",
+        "description": "Get team from the database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Team ID"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeamInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Team creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Team creation failed"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1223,6 +1338,158 @@
           "team": {
             "type": "string",
             "example": "England"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "AddTeam": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Pune"
+          },
+          "ageGroup": {
+            "type": "string",
+            "example": "16-24"
+          },
+          "staff": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Akshay Sgvekar"
+                },
+                "designation": {
+                  "type": "string",
+                  "example": "Manager"
+                },
+                "contact": {
+                  "type": "string",
+                  "format": "email"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreatedTeam": {
+        "type": "object",
+        "properties": {
+          "team": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5e6d4169de71e629c4d72417"
+              },
+              "name": {
+                "type": "string",
+                "example": "Pune"
+              },
+              "ageGroup": {
+                "type": "string",
+                "example": "16-25"
+              },
+              "staff": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5e6d4169de71e629c4d72417"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Akshay Sgvekar"
+                    },
+                    "designation": {
+                      "type": "string",
+                      "example": "Manager"
+                    },
+                    "contact": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date"
+                    }
+                  }
+                }
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        }
+      },
+      "TeamInfo": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5e6d4169de71e629c4d72417"
+          },
+          "name": {
+            "type": "string",
+            "example": "Pune"
+          },
+          "ageGroup": {
+            "type": "string",
+            "example": "16-25"
+          },
+          "staff": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5e6d4169de71e629c4d72417"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Akshay Sgvekar"
+                },
+                "designation": {
+                  "type": "string",
+                  "example": "Manager"
+                },
+                "contact": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
           },
           "createdAt": {
             "type": "string",
