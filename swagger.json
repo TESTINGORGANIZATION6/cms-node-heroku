@@ -298,7 +298,7 @@
         "x-codegen-request-body-name": "player"
       }
     },
-    "/updateplayer/{userId}": {
+    "/updateplayer/{playerId}/{userId}": {
       "put": {
         "tags": [
           "Player"
@@ -314,6 +314,15 @@
             },
             "required": true,
             "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
           }
         ],
         "requestBody": {
@@ -347,6 +356,61 @@
                 },
                 "example": {
                   "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "player"
+      }
+    },
+    "/updateplayerstatus/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Update Player Status",
+        "description": "Update player status to enable/disable",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player status updated succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedPlayer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player status update failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No player found"
                 }
               }
             }
@@ -514,7 +578,7 @@
         "x-codegen-request-body-name": "coach"
       }
     },
-    "/updatecoach/{userId}": {
+    "/updatecoach/{playerId}/{userId}": {
       "put": {
         "tags": [
           "Coach"
@@ -530,6 +594,15 @@
             },
             "required": true,
             "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
           }
         ],
         "requestBody": {
@@ -563,6 +636,61 @@
                 },
                 "example": {
                   "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "coach"
+      }
+    },
+    "/updatecoachstatus/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Update Coach Status",
+        "description": "Update coach status to enable/disable",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coach status updated succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedCoach"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach status update failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No coach found"
                 }
               }
             }
@@ -700,14 +828,14 @@
       },
       "LoginUser": {
         "required": [
-          "email",
+          "name",
           "password"
         ],
         "type": "object",
         "properties": {
-          "email": {
+          "name": {
             "type": "string",
-            "format": "email"
+            "example": "rashy07"
           },
           "password": {
             "type": "string",
@@ -828,9 +956,6 @@
             "type": "string",
             "example": "user@example.com"
           },
-          "isActive": {
-            "type": "boolean"
-          },
           "team": {
             "type": "string",
             "example": "Mumbai"
@@ -897,7 +1022,8 @@
             "example": "user@example.com"
           },
           "isActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": true
           },
           "team": {
             "type": "string",
@@ -960,6 +1086,14 @@
       },
       "AddCoach": {
         "type": "object",
+        "required": [
+          "firstname",
+          "lastname",
+          "age",
+          "role",
+          "email",
+          "team"
+        ],
         "properties": {
           "firstname": {
             "type": "string",
@@ -981,8 +1115,8 @@
             "type": "string",
             "example": "user@example.com"
           },
-          "isActive": {
-            "type": "boolean"
+          "philosophy": {
+            "type": "string"
           },
           "team": {
             "type": "string",
@@ -1046,7 +1180,8 @@
             "format": "email"
           },
           "isActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": true
           },
           "team": {
             "type": "string",

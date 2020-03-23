@@ -35,7 +35,6 @@ exports.addPlayer = (req, res) => {
             firstname,
             lastname,
             role,
-            isActive,
             age,
             email,
             team,
@@ -45,7 +44,6 @@ exports.addPlayer = (req, res) => {
         if (!firstname ||
             !lastname ||
             !role || 
-            !isActive || 
             !age || 
             !email || 
             !team || 
@@ -117,7 +115,6 @@ exports.updatePlayer = (req, res) => {
             firstname,
             lastname,
             role,
-            isActive,
             age,
             email,
             team,
@@ -127,7 +124,6 @@ exports.updatePlayer = (req, res) => {
         if (!firstname ||
             !lastname ||
             !role || 
-            !isActive || 
             !age || 
             !email || 
             !team || 
@@ -158,5 +154,22 @@ exports.updatePlayer = (req, res) => {
             }
             res.json(result);
         });
+    });
+};
+
+exports.updateStatus = (req, res) => {
+    status = req.player.isActive
+    Player.findOneAndUpdate(
+        { _id: req.player._id },
+        { isActive: !status },
+        { new: true }
+    ).exec((err, player) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'player not found'
+            });
+        }
+        player.photo = undefined;
+        res.json(player)
     });
 };

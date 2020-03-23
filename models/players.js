@@ -31,6 +31,7 @@ const playerSchema = new mongoose.Schema({
     },
     isActive: {
         type: Boolean,
+        default: true
     },
     team: {
         type: String,

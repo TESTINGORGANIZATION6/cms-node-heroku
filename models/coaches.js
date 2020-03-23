@@ -31,12 +31,17 @@ const coachSchema = new mongoose.Schema({
     },
     isActive: {
         type: Boolean,
+        default: true
     },
     team: {
         type: String,
         required: true,
         trim: true,
         maxlength: 32
+    },
+    philosophy: {
+        type: String,
+        trim: true
     },
     photo:{
         data: Buffer,

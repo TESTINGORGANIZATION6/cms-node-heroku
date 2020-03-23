@@ -35,7 +35,6 @@ exports.addCoach = (req, res) => {
             firstname,
             lastname,
             role,
-            isActive,
             age,
             email,
             team
@@ -43,8 +42,7 @@ exports.addCoach = (req, res) => {
 
         if (!firstname ||
             !lastname ||
-            !role || 
-            !isActive || 
+            !role ||
             !age || 
             !email || 
             !team ) {
@@ -115,7 +113,6 @@ exports.updateCoach = (req, res) => {
             firstname,
             lastname,
             role,
-            isActive,
             age,
             email,
             team
@@ -124,7 +121,6 @@ exports.updateCoach = (req, res) => {
         if (!firstname ||
             !lastname ||
             !role || 
-            !isActive || 
             !age || 
             !email || 
             !team) {
@@ -154,5 +150,22 @@ exports.updateCoach = (req, res) => {
             }
             res.json(result);
         });
+    });
+};
+
+exports.updateStatus = (req, res) => {
+    status = req.coach.isActive
+    Coach.findOneAndUpdate(
+        { _id: req.coach._id },
+        { isActive: !status },
+        { new: true }
+    ).exec((err, coach) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'coach not found'
+            });
+        }
+        coach.photo = undefined;
+        res.json(coach)
     });
 };

@@ -23,12 +23,12 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
 	//find user with email
-	const { email, password } = req.body;
-	User.findOne({ email }, (err, user) => {
+	const { name, password } = req.body;
+	User.findOne({ name }, (err, user) => {
 		console.log(err, user);
 		if (err || !user) {
 			return res.status(400).json({
-				err: 'User with email does not exist... Please signup',
+				err: 'User does not exist... Please signup',
 			});
 		}
 		//if user then check password
