@@ -33,6 +33,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', require('./routes/user-routes'))
 app.use('/api/v1', require('./routes/player-routes'))
 app.use('/api/v1', require('./routes/coach-routes'))
+app.use('/api/v1', require('./routes/team-routes'))
 
 //routes
 app.get('/', (req, res) => {
