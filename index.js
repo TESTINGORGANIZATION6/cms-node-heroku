@@ -32,6 +32,7 @@ app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', require('./routes/user-routes'))
 app.use('/api/v1', require('./routes/player-routes'))
+app.use('/api/v1', require('./routes/coach-routes'))
 
 //routes
 app.get('/', (req, res) => {

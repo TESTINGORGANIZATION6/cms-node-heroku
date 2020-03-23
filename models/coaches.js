@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const playerSchema = new mongoose.Schema({
+const coachSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: true,
@@ -39,11 +39,9 @@ const playerSchema = new mongoose.Schema({
         trim: true,
         maxlength: 32
     },
-    position: {
+    philosophy: {
         type: String,
-        required: true,
-        trim: true,
-        maxlength: 32
+        trim: true
     },
     photo:{
         data: Buffer,
@@ -51,4 +49,4 @@ const playerSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model('player', playerSchema)
+module.exports = mongoose.model('coach', coachSchema)

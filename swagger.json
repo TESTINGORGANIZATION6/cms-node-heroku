@@ -240,6 +240,566 @@
           }
         }
       }
+    },
+    "/addplayer/{userId}": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Add Player",
+        "description": "Store player information in database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "requestBody": {
+          "description": "The player to create.",
+          "content": {
+            "form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPlayer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Player created succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedPlayer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "player"
+      }
+    },
+    "/updateplayer/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Update Player",
+        "description": "Update player information in database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "requestBody": {
+          "description": "The player to create.",
+          "content": {
+            "form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPlayer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Player created succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedPlayer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "player"
+      }
+    },
+    "/updateplayerstatus/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Update Player Status",
+        "description": "Update player status to enable/disable",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player status updated succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedPlayer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player status update failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No player found"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "player"
+      }
+    },
+    "/getplayer/{playerId}/{userId}": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Get Player information",
+        "description": "Get player profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No player found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getplayers/{userId}": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Get Players",
+        "description": "Get all players",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlayerInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No player found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addcoach/{userId}": {
+      "post": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Add Coach",
+        "description": "Store Coach information in database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "requestBody": {
+          "description": "The coach to create.",
+          "content": {
+            "form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCoach"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Coach created succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedCoach"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "coach"
+      }
+    },
+    "/updatecoach/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Update Coach",
+        "description": "Update coach information in database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "requestBody": {
+          "description": "The player to create.",
+          "content": {
+            "form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCoach"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Coach created succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedCoach"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "coach"
+      }
+    },
+    "/updatecoachstatus/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Update Coach Status",
+        "description": "Update coach status to enable/disable",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coach status updated succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedCoach"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach status update failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No coach found"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "coach"
+      }
+    },
+    "/getcoach/{coachId}/{userId}": {
+      "get": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Get Coach information",
+        "description": "Get coach profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "coachId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the coach to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coach information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CoachInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No coach found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getcoaches/{userId}": {
+      "get": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Get Coaches",
+        "description": "Get all coaches",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coach information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CoachInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No coach found"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -268,14 +828,14 @@
       },
       "LoginUser": {
         "required": [
-          "email",
+          "name",
           "password"
         ],
         "type": "object",
         "properties": {
-          "email": {
+          "name": {
             "type": "string",
-            "format": "email"
+            "example": "rashy07"
           },
           "password": {
             "type": "string",
@@ -370,6 +930,307 @@
                 "type": "integer"
               }
             }
+          }
+        }
+      },
+      "AddPlayer": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "example": "Prachit"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Patil"
+          },
+          "age": {
+            "type": "number",
+            "example": 24
+          },
+          "role": {
+            "type": "string",
+            "example": "player"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "team": {
+            "type": "string",
+            "example": "Mumbai"
+          },
+          "position": {
+            "type": "string",
+            "example": "LW"
+          },
+          "photo": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "CreatedPlayer": {
+        "type": "object",
+        "properties": {
+          "photo": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "Buffer"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "example": []
+                    }
+                  },
+                  "contentType": {
+                    "type": "string",
+                    "example": "image/jpeg"
+                  }
+                }
+              }
+            }
+          },
+          "_id": {
+            "type": "string",
+            "example": "5e6d4169de71e629c4d72417"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Prachit"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Patil"
+          },
+          "age": {
+            "type": "number",
+            "example": 24
+          },
+          "role": {
+            "type": "string",
+            "example": "player"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "team": {
+            "type": "string",
+            "example": "Mumbai"
+          },
+          "position": {
+            "type": "string",
+            "example": "LW"
+          }
+        }
+      },
+      "PlayerInfo": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5e6d4169de71e629c4d72417"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "marcus"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "rashford"
+          },
+          "age": {
+            "type": "number",
+            "example": 21
+          },
+          "role": {
+            "type": "string",
+            "example": "player"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "team": {
+            "type": "string",
+            "example": "England"
+          },
+          "position": {
+            "type": "string",
+            "example": "ST"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "AddCoach": {
+        "type": "object",
+        "required": [
+          "firstname",
+          "lastname",
+          "age",
+          "role",
+          "email",
+          "team"
+        ],
+        "properties": {
+          "firstname": {
+            "type": "string",
+            "example": "Prachit"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Patil"
+          },
+          "age": {
+            "type": "number",
+            "example": 24
+          },
+          "role": {
+            "type": "string",
+            "example": "coach"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "philosophy": {
+            "type": "string"
+          },
+          "team": {
+            "type": "string",
+            "example": "Mumbai"
+          },
+          "photo": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "CreatedCoach": {
+        "type": "object",
+        "properties": {
+          "photo": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "Buffer"
+                  },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "example": []
+                    }
+                  },
+                  "contentType": {
+                    "type": "string",
+                    "example": "image/jpeg"
+                  }
+                }
+              }
+            }
+          },
+          "_id": {
+            "type": "string",
+            "example": "5e6d4169de71e629c4d72417"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Prachit"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Patil"
+          },
+          "age": {
+            "type": "number",
+            "example": 24
+          },
+          "role": {
+            "type": "string",
+            "example": "player"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "team": {
+            "type": "string",
+            "example": "Mumbai"
+          }
+        }
+      },
+      "CoachInfo": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5e6d4169de71e629c4d72417"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "marcus"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "rashford"
+          },
+          "age": {
+            "type": "number",
+            "example": 21
+          },
+          "role": {
+            "type": "string",
+            "example": "coach"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "team": {
+            "type": "string",
+            "example": "England"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

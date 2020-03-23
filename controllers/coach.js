@@ -1,27 +1,27 @@
 const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
-const Player = require('../models/players');
+const Coach = require('../models/coaches');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
-exports.playerById = (req, res, next, id) => {
-    Player.findById(id).exec((err, player) => {
-        if (err || !player) {
+exports.coachById = (req, res, next, id) => {
+    Coach.findById(id).exec((err, coach) => {
+        if (err || !coach) {
             return res.status(400).json({
-                error: "Player not found"
+                error: "Coach not found"
             });
         }
-        req.player = player;
+        req.coach = coach;
         next();
     })
 }
 
-exports.getPlayer = (req, res) => {
-    req.player.photo = undefined;
-    return res.json(req.player);
+exports.getCoach = (req, res) => {
+    req.coach.photo = undefined;
+    return res.json(req.coach);
 }
 
-exports.addPlayer = (req, res) => {
+exports.addCoach = (req, res) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions = true
     form.parse(req, (err, fields, files) => {
@@ -37,23 +37,21 @@ exports.addPlayer = (req, res) => {
             role,
             age,
             email,
-            team,
-            position
+            team
         } = fields
 
         if (!firstname ||
             !lastname ||
-            !role || 
+            !role ||
             !age || 
             !email || 
-            !team || 
-            !position) {
+            !team ) {
                 return res.status(400).json({
                     error: "All fields are required"
                 })
         }
 
-        let player = new Player(fields)
+        let coach = new Coach(fields)
 
         if (files.photo) {
             if (files.photo.size > 1000000) {
@@ -61,11 +59,11 @@ exports.addPlayer = (req, res) => {
                     error: "Image should be less than 1MB"
                 })
             }
-            player.photo.data = fs.readFileSync(files.photo.path)
-            player.photo.contentType = files.photo.type
+            coach.photo.data = fs.readFileSync(files.photo.path)
+            coach.photo.contentType = files.photo.type
         }
 
-        player.save((err, result) => {
+        coach.save((err, result) => {
             if (err) {
                 return re.status(400).json({
                     error: errorHandler(err)
@@ -76,32 +74,32 @@ exports.addPlayer = (req, res) => {
     });
 };
 
-exports.getPlayers = (req, res) => {
-    Player.find().exec((err, players) => {
+exports.getCoaches = (req, res) => {
+    Coach.find().exec((err, coaches) => {
         if (err) {
             res.status(400).json({
-                error: 'players not found'
+                error: 'coaches not found'
             });
         }
-        res.json(players)
+        res.json(coaches)
     });
 };
 
-exports.deletePlayer = (req, res) => {
-    let player = req.player;
-    player.remove(err => {
+exports.deleteCoach = (req, res) => {
+    let coach = req.coach;
+    coach.remove(err => {
         if (err) {
             res.status(400).json({
-                error: 'players not found'
+                error: 'coach not found'
             });
         }
         res.json({
-            message: 'player deleted'
+            message: 'coach deleted'
         })
     });
 };
 
-exports.updatePlayer = (req, res) => {
+exports.updateCoach = (req, res) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions = true
     form.parse(req, (err, fields, files) => {
@@ -117,8 +115,7 @@ exports.updatePlayer = (req, res) => {
             role,
             age,
             email,
-            team,
-            position
+            team
         } = fields
 
         if (!firstname ||
@@ -126,15 +123,14 @@ exports.updatePlayer = (req, res) => {
             !role || 
             !age || 
             !email || 
-            !team || 
-            !position) {
+            !team) {
                 return res.status(400).json({
                     error: "All fields are required"
                 })
         }
 
-        let player = req.player
-        player = _.extend(player, fields)
+        let coach = req.coach
+        coach = _.extend(coach, fields)
 
         if (files.photo) {
             if (files.photo.size > 1000000) {
@@ -142,11 +138,11 @@ exports.updatePlayer = (req, res) => {
                     error: "Image should be less than 1MB"
                 })
             }
-            player.photo.data = fs.readFileSync(files.photo.path)
-            player.photo.contentType = files.photo.type
+            coach.photo.data = fs.readFileSync(files.photo.path)
+            coach.photo.contentType = files.photo.type
         }
 
-        player.save((err, result) => {
+        coach.save((err, result) => {
             if (err) {
                 return re.status(400).json({
                     error: errorHandler(err)
@@ -158,18 +154,18 @@ exports.updatePlayer = (req, res) => {
 };
 
 exports.updateStatus = (req, res) => {
-    status = req.player.isActive
-    Player.findOneAndUpdate(
-        { _id: req.player._id },
+    status = req.coach.isActive
+    Coach.findOneAndUpdate(
+        { _id: req.coach._id },
         { isActive: !status },
         { new: true }
-    ).exec((err, player) => {
+    ).exec((err, coach) => {
         if (err) {
             return res.status(400).json({
-                error: 'player not found'
+                error: 'coach not found'
             });
         }
-        player.photo = undefined;
-        res.json(player)
+        coach.photo = undefined;
+        res.json(coach)
     });
 };
