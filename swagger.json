@@ -921,15 +921,23 @@
     "schemas": {
       "User": {
         "required": [
-          "name",
+          "username",
           "email",
           "password"
         ],
         "type": "object",
         "properties": {
-          "name": {
+          "username": {
             "type": "string",
             "example": "rashy07"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Marcus"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Rashford"
           },
           "email": {
             "type": "string",
@@ -971,9 +979,17 @@
                 "type": "string",
                 "example": "5e6d4169de71e629c4d72417"
               },
-              "name": {
+              "username": {
                 "type": "string",
                 "example": "rashy07"
+              },
+              "firstname": {
+                "type": "string",
+                "example": "Marcus"
+              },
+              "lastname": {
+                "type": "string",
+                "example": "Rashford"
               },
               "email": {
                 "type": "string",
@@ -1001,9 +1017,17 @@
             "type": "string",
             "example": "5e6d4169de71e629c4d72417"
           },
-          "name": {
+          "username": {
             "type": "string",
             "example": "rashy07"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Marcus"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Rashford"
           },
           "email": {
             "type": "string",
@@ -1033,9 +1057,17 @@
                 "type": "string",
                 "example": "5e6d4169de71e629c4d72417"
               },
-              "name": {
+              "username": {
                 "type": "string",
                 "example": "rashy07"
+              },
+              "firstname": {
+                "type": "string",
+                "example": "Marcus"
+              },
+              "lastname": {
+                "type": "string",
+                "example": "Rashford"
               },
               "email": {
                 "type": "string",
@@ -1078,6 +1110,10 @@
           "position": {
             "type": "string",
             "example": "LW"
+          },
+          "user": {
+            "type": "string",
+            "example": "5e6d4169de34918236d72417"
           },
           "photo": {
             "type": "string",
@@ -1147,6 +1183,18 @@
           "position": {
             "type": "string",
             "example": "LW"
+          },
+          "user": {
+            "type": "string",
+            "example": "5e6d4169de34918236d72417"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
