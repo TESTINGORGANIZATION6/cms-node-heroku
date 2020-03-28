@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema
 
 const playerSchema = new mongoose.Schema({
     firstname: {
@@ -48,6 +49,11 @@ const playerSchema = new mongoose.Schema({
     photo:{
         data: Buffer,
         contentType: String
+    },
+    user:{
+        type: ObjectId,
+        ref: 'User',
+        required: true
     }
 }, { timestamps: true })
 
