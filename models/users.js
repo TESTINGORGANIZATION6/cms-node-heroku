@@ -3,7 +3,19 @@ const crypto = require('crypto')
 const uuidv1 = require('uuid/v1')
 
 const userSchema = new mongoose.Schema({
-    name:{
+    username:{
+        type: String,
+        trim: true,
+        required: true,
+        maxlength: 32
+    },
+    firstname:{
+        type: String,
+        trim: true,
+        required: true,
+        maxlength: 32
+    },
+    lastname:{
         type: String,
         trim: true,
         required: true,
@@ -22,7 +34,7 @@ const userSchema = new mongoose.Schema({
     salt: String,
     role: {
         type: Number,
-        default: 0
+        default: 1
     }
 }, { timestamps: true })
 

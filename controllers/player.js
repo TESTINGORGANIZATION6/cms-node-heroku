@@ -77,9 +77,9 @@ exports.addPlayer = (req, res) => {
 };
 
 exports.getPlayers = (req, res) => {
-    Player.find().exec((err, players) => {
-        if (err) {
-            res.status(400).json({
+    Player.find({ user: req.profile._id }).exec((err, players) => {
+        if (err || players.length === 0) {
+            return res.status(400).json({
                 error: 'players not found'
             });
         }

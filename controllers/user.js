@@ -23,8 +23,8 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
 	//find user with email
-	const { name, password } = req.body;
-	User.findOne({ name }, (err, user) => {
+	const { username, password } = req.body;
+	User.findOne({ username }, (err, user) => {
 		console.log(err, user);
 		if (err || !user) {
 			return res.status(400).json({
@@ -42,8 +42,8 @@ exports.signin = (req, res) => {
 		//persist the token as 't' in cookie with expiry date
 		res.cookie('t', token, { expire: new Date() + 9999 });
 		//send response with user and token
-		const { _id, name, email, role } = user;
-		return res.json({ token, user: { _id, email, name, role } });
+		const { _id, username, firstname, lastname, email, role } = user;
+		return res.json({ token, user: { _id, username, firstname, lastname, email, role } });
 	});
 };
 
