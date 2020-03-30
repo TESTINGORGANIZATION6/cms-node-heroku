@@ -37,7 +37,6 @@ exports.addPlayer = (req, res) => {
             role,
             age,
             email,
-            team,
             position
         } = fields
 
@@ -46,7 +45,6 @@ exports.addPlayer = (req, res) => {
             !role || 
             !age || 
             !email || 
-            !team || 
             !position) {
                 return res.status(400).json({
                     error: "All fields are required"
@@ -117,7 +115,6 @@ exports.updatePlayer = (req, res) => {
             role,
             age,
             email,
-            team,
             position
         } = fields
 
@@ -126,7 +123,6 @@ exports.updatePlayer = (req, res) => {
             !role || 
             !age || 
             !email || 
-            !team || 
             !position) {
                 return res.status(400).json({
                     error: "All fields are required"
