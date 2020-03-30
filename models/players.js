@@ -36,7 +36,6 @@ const playerSchema = new mongoose.Schema({
     },
     team: {
         type: String,
-        required: true,
         trim: true,
         maxlength: 32
     },
