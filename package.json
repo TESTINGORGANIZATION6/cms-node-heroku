@@ -31,7 +31,7 @@
     "mongoose": "^5.9.7",
     "morgan": "^1.10.0",
     "swagger-ui-express": "^4.1.4",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.3"
   },
   "engines": {
     "node": "12.x"
