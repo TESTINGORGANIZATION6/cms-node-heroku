@@ -16,6 +16,18 @@ exports.addTeam = (req, res) => {
     });
 };
 
+exports.getTeams = (req, res) => {
+	Team.find({ user: req.profile._id })
+		.exec((err, teams) => {
+			if (err) {
+				return res.status(400).json({
+					error: 'teams not found'
+				});
+			}
+			res.json(teams);
+		});
+};
+
 exports.teamById = (req, res, next, id) => {
 	Team.findById(id).exec((err, team) => {
 		if (err || !team) {

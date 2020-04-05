@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema
 
 const staffSchema = new mongoose.Schema({
     name: String,
@@ -23,6 +24,11 @@ const teamSchema = new mongoose.Schema({
     },
     players: {
         type: String
+    },
+    user:{
+        type: ObjectId,
+        ref: 'User',
+        required: true
     },
     staff: [staffSchema]
 }, { timestamps: true });
