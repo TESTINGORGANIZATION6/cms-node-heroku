@@ -915,6 +915,54 @@
           }
         }
       }
+    },
+    "/getteams/{userId}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Get Teams",
+        "description": "Get teams from the database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeamInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Team creation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Team creation failed"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1448,6 +1496,10 @@
                 "type": "string",
                 "example": "16-25"
               },
+              "user": {
+                "type": "string",
+                "example": "5e80abc8dacad100170561b5"
+              },
               "staff": {
                 "type": "array",
                 "items": {
@@ -1506,6 +1558,10 @@
           "ageGroup": {
             "type": "string",
             "example": "16-25"
+          },
+          "user": {
+            "type": "string",
+            "example": "5e80abc8dacad100170561b5"
           },
           "staff": {
             "type": "array",
