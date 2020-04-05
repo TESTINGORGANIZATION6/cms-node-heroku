@@ -74,13 +74,21 @@ exports.addPlayer = (req, res) => {
     });
 };
 
+// query params = ?orderBy=createdAt&sortBy=desc&limit=3
 exports.getPlayers = (req, res) => {
-    Player.find({ user: req.profile._id }).exec((err, players) => {
-        if (err || players.length === 0) {
-            return res.status(400).json({
-                error: 'players not found'
-            });
-        }
+    const order = req.query.orderBy ? req.query.orderBy : 'asc';
+    const sort = req.query.sortBy ? req.query.sortBy : '_id';
+    const limit = req.query.limit ? parseInt(req.query.limit) : 3;
+    Player.find({ user: req.profile._id })
+        .select('-photo')
+        .sort([[ sort, order ]])
+        .limit(limit)
+        .exec((err, players) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'players not found'
+                });
+            }
         res.json(players)
     });
 };

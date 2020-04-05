@@ -35,9 +35,8 @@ const playerSchema = new mongoose.Schema({
         default: true
     },
     team: {
-        type: String,
-        trim: true,
-        maxlength: 32
+        type: ObjectId,
+        ref: 'Team',
     },
     position: {
         type: String,
