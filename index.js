@@ -34,6 +34,7 @@ app.use('/api/v1', require('./routes/user-routes'))
 app.use('/api/v1', require('./routes/player-routes'))
 app.use('/api/v1', require('./routes/coach-routes'))
 app.use('/api/v1', require('./routes/team-routes'))
+app.use('/api/v1', require('./routes/slack-routes'))
 
 //routes
 app.get('/', (req, res) => {

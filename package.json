@@ -30,6 +30,7 @@
     "lodash": "^4.17.15",
     "mongoose": "^5.9.7",
     "morgan": "^1.10.0",
+    "slack-node": "^0.1.8",
     "swagger-ui-express": "^4.1.4",
     "uuid": "^7.0.3"
   },
