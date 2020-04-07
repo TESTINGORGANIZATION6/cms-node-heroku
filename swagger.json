@@ -493,20 +493,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Player information",
+            "description": "Players information",
             "content": {
               "application:json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PlayerInfo"
-                  }
+                  "$ref": "#/components/schemas/Players"
                 }
               }
             }
           },
           "400": {
-            "description": "Player not found",
+            "description": "Players not found",
             "content": {
               "application:json": {
                 "schema": {
@@ -892,23 +889,20 @@
             "content": {
               "application:json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TeamInfo"
-                  }
+                  "$ref": "#/components/schemas/Teaminfo"
                 }
               }
             }
           },
           "400": {
-            "description": "Team creation failed",
+            "description": "Team not found",
             "content": {
               "application:json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
                 },
                 "example": {
-                  "message": "Team creation failed"
+                  "message": "Team not found"
                 }
               }
             }
@@ -940,10 +934,7 @@
             "content": {
               "application:json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TeamInfo"
-                  }
+                  "$ref": "#/components/schemas/Teams"
                 }
               }
             }
@@ -1295,6 +1286,71 @@
           }
         }
       },
+      "Players": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "number",
+            "example": 2
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5e6d4169de71e629c4d72417"
+                },
+                "firstname": {
+                  "type": "string",
+                  "example": "marcus"
+                },
+                "lastname": {
+                  "type": "string",
+                  "example": "rashford"
+                },
+                "age": {
+                  "type": "number",
+                  "example": 21
+                },
+                "role": {
+                  "type": "string",
+                  "example": "player"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "team": {
+                  "type": "string",
+                  "example": "England"
+                },
+                "position": {
+                  "type": "string",
+                  "example": "ST"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          }
+        }
+      },
       "AddCoach": {
         "type": "object",
         "required": [
@@ -1544,7 +1600,7 @@
           }
         }
       },
-      "TeamInfo": {
+      "Teaminfo": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1602,6 +1658,83 @@
           "updatedAt": {
             "type": "string",
             "format": "date"
+          }
+        }
+      },
+      "Teams": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "number",
+            "example": 2
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5e6d4169de71e629c4d72417"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Pune"
+                },
+                "ageGroup": {
+                  "type": "string",
+                  "example": "16-25"
+                },
+                "user": {
+                  "type": "string",
+                  "example": "5e80abc8dacad100170561b5"
+                },
+                "staff": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "5e6d4169de71e629c4d72417"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Akshay Sgvekar"
+                      },
+                      "designation": {
+                        "type": "string",
+                        "example": "Manager"
+                      },
+                      "contact": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date"
+                      }
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
           }
         }
       },

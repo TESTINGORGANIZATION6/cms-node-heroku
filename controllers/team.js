@@ -17,14 +17,32 @@ exports.addTeam = (req, res) => {
 };
 
 exports.getTeams = (req, res) => {
+	const order = req.query.orderBy ? req.query.orderBy : 'asc';
+    const sort = req.query.sortBy ? req.query.sortBy : '_id';
+    const limit = req.query.limit ? parseInt(req.query.limit) : 3;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const skip = (page - 1)*limit
+	
 	Team.find({ user: req.profile._id })
+		.sort([[ sort, order ]])
+        .limit(limit)
+        .skip(skip)
 		.exec((err, teams) => {
-			if (err) {
-				return res.status(400).json({
-					error: 'teams not found'
-				});
-			}
-			res.json(teams);
+			Team.countDocuments({ user: req.profile._id })
+				.exec((error, totalPages) => {
+					if (!error) {
+						if (err) {
+							return res.status(400).json({
+								error: 'teams not found'
+							});
+						}
+						res.json({
+							totalPages: Math.ceil(totalPages/limit),
+                            page,
+                            result: teams
+						});
+					}
+			});
 		});
 };
 

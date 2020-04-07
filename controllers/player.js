@@ -79,17 +79,31 @@ exports.getPlayers = (req, res) => {
     const order = req.query.orderBy ? req.query.orderBy : 'asc';
     const sort = req.query.sortBy ? req.query.sortBy : '_id';
     const limit = req.query.limit ? parseInt(req.query.limit) : 3;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const skip = (page - 1)*limit
+
     Player.find({ user: req.profile._id })
         .select('-photo')
         .sort([[ sort, order ]])
         .limit(limit)
+        .skip(skip)
         .exec((err, players) => {
-            if (err) {
-                return res.status(400).json({
-                    error: 'players not found'
+            // To do, make this in one query
+            Player.countDocuments({ user: req.profile._id })
+                .exec((error, totalPages) => {
+                    if (!error) {
+                        if (err) {
+                            return res.status(400).json({
+                                error: 'players not found'
+                            });
+                        }
+                        res.json({
+                            totalPages: Math.ceil(totalPages/limit),
+                            page,
+                            result: players
+                        });
+                    }
                 });
-            }
-        res.json(players)
     });
 };
 
