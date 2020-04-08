@@ -65,7 +65,7 @@ exports.addPlayer = (req, res) => {
 
         player.save((err, result) => {
             if (err) {
-                return re.status(400).json({
+                return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
@@ -166,7 +166,7 @@ exports.updatePlayer = (req, res) => {
 
         player.save((err, result) => {
             if (err) {
-                return re.status(400).json({
+                return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
