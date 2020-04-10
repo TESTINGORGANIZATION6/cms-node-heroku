@@ -36,16 +36,14 @@ exports.addCoach = (req, res) => {
             lastname,
             role,
             age,
-            email,
-            team
+            email
         } = fields
 
         if (!firstname ||
             !lastname ||
             !role ||
             !age || 
-            !email || 
-            !team ) {
+            !email ) {
                 return res.status(400).json({
                     error: "All fields are required"
                 })
@@ -65,7 +63,7 @@ exports.addCoach = (req, res) => {
 
         coach.save((err, result) => {
             if (err) {
-                return re.status(400).json({
+                return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
@@ -75,13 +73,32 @@ exports.addCoach = (req, res) => {
 };
 
 exports.getCoaches = (req, res) => {
-    Coach.find().exec((err, coaches) => {
-        if (err) {
-            res.status(400).json({
-                error: 'coaches not found'
-            });
-        }
-        res.json(coaches)
+    const order = req.query.orderBy ? req.query.orderBy : 'asc';
+    const sort = req.query.sortBy ? req.query.sortBy : '_id';
+    const limit = req.query.limit ? parseInt(req.query.limit) : 3;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const skip = (page - 1)*limit
+    Coach.find({ user: req.profile._id })
+        .select('-photo')
+        .sort([[ sort, order ]])
+        .limit(limit)
+        .skip(skip)
+        .exec((err, coaches) => {
+            Coach.countDocuments({ user: req.profile._id })
+                .exec((error, totalPages) => {
+                    if(!error) {
+                        if (err) {
+                            res.status(400).json({
+                                error: 'coaches not found'
+                            });
+                        }
+                        res.json({
+                            totalPages: Math.ceil(totalPages/limit),
+                            page,
+                            result: coaches
+                        });
+                    }
+                });
     });
 };
 
@@ -114,16 +131,14 @@ exports.updateCoach = (req, res) => {
             lastname,
             role,
             age,
-            email,
-            team
+            email
         } = fields
 
         if (!firstname ||
             !lastname ||
             !role || 
             !age || 
-            !email || 
-            !team) {
+            !email) {
                 return res.status(400).json({
                     error: "All fields are required"
                 })
@@ -144,7 +159,7 @@ exports.updateCoach = (req, res) => {
 
         coach.save((err, result) => {
             if (err) {
-                return re.status(400).json({
+                return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
