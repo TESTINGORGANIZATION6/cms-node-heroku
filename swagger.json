@@ -1141,7 +1141,7 @@
           },
           "team": {
             "type": "string",
-            "example": "Mumbai"
+            "example": "5e6d4169de71e629c4d72781"
           },
           "position": {
             "type": "string",
@@ -1213,8 +1213,17 @@
             "example": true
           },
           "team": {
-            "type": "string",
-            "example": "Mumbai"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5e90c1d68539454f04e29bc4"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mumbai"
+              }
+            }
           },
           "position": {
             "type": "string",
@@ -1266,8 +1275,17 @@
             "example": true
           },
           "team": {
-            "type": "string",
-            "example": "England"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5e90c1d68539454f04e29bc4"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mumbai"
+              }
+            }
           },
           "position": {
             "type": "string",
@@ -1328,8 +1346,17 @@
                   "example": true
                 },
                 "team": {
-                  "type": "string",
-                  "example": "5e8fe0e7d18eaf5ab8fafeed"
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5e90c1d68539454f04e29bc4"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Mumbai"
+                    }
+                  }
                 },
                 "position": {
                   "type": "string",
@@ -1452,8 +1479,17 @@
             "example": true
           },
           "team": {
-            "type": "string",
-            "example": "5e8fe0e7d18eaf5ab8faiopa"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5e90c1d68539454f04e29bc4"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mumbai"
+              }
+            }
           }
         }
       },
@@ -1489,8 +1525,17 @@
             "example": true
           },
           "team": {
-            "type": "string",
-            "example": "5e8fe0e7d18eaf5ab8faiopa"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5e90c1d68539454f04e29bc4"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mumbai"
+              }
+            }
           },
           "createdAt": {
             "type": "string",
@@ -1547,8 +1592,17 @@
                   "example": true
                 },
                 "team": {
-                  "type": "string",
-                  "example": "5e8fe0e7d18eaf5ab8fafeed"
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5e90c1d68539454f04e29bc4"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Mumbai"
+                    }
+                  }
                 },
                 "createdAt": {
                   "type": "string",

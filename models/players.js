@@ -36,7 +36,7 @@ const playerSchema = new mongoose.Schema({
     },
     team: {
         type: ObjectId,
-        ref: 'Team',
+        ref: 'team',
     },
     position: {
         type: String,
@@ -50,7 +50,7 @@ const playerSchema = new mongoose.Schema({
     },
     user:{
         type: ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true
     }
 }, { timestamps: true })

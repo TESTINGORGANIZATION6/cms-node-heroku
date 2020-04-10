@@ -5,7 +5,9 @@ const Coach = require('../models/coaches');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
 exports.coachById = (req, res, next, id) => {
-    Coach.findById(id).exec((err, coach) => {
+    Coach.findById(id)
+        .populate('team', '_id name')
+        .exec((err, coach) => {
         if (err || !coach) {
             return res.status(400).json({
                 error: "Coach not found"
@@ -67,7 +69,15 @@ exports.addCoach = (req, res) => {
                     error: errorHandler(err)
                 })
             }
-            res.json(result);
+            result.populate('team', '_id name')
+                .execPopulate((err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: errorHandler(err)
+                        })
+                    }
+                    res.json(result)
+                });
         });
     });
 };
@@ -81,6 +91,7 @@ exports.getCoaches = (req, res) => {
     Coach.find({ user: req.profile._id })
         .select('-photo')
         .sort([[ sort, order ]])
+        .populate('team', '_id name')
         .limit(limit)
         .skip(skip)
         .exec((err, coaches) => {
@@ -163,7 +174,15 @@ exports.updateCoach = (req, res) => {
                     error: errorHandler(err)
                 })
             }
-            res.json(result);
+            result.populate('team', '_id name')
+                .execPopulate((err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: errorHandler(err)
+                        })
+                    }
+                    res.json(result)
+                });
         });
     });
 };
@@ -174,7 +193,9 @@ exports.updateStatus = (req, res) => {
         { _id: req.coach._id },
         { isActive: !status },
         { new: true }
-    ).exec((err, coach) => {
+    )
+    .populate('team', '_id name')
+    .exec((err, coach) => {
         if (err) {
             return res.status(400).json({
                 error: 'coach not found'

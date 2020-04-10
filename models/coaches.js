@@ -36,7 +36,7 @@ const coachSchema = new mongoose.Schema({
     },
     team: {
         type: ObjectId,
-        ref: 'Team',
+        ref: 'team',
     },
     philosophy: {
         type: String,
@@ -48,7 +48,7 @@ const coachSchema = new mongoose.Schema({
     },
     user:{
         type: ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true
     }
 }, { timestamps: true })
