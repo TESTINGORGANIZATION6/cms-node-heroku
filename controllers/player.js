@@ -5,14 +5,16 @@ const Player = require('../models/players');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
 exports.playerById = (req, res, next, id) => {
-    Player.findById(id).exec((err, player) => {
-        if (err || !player) {
-            return res.status(400).json({
-                error: "Player not found"
-            });
-        }
-        req.player = player;
-        next();
+    Player.findById(id)
+        .populate('team', '_id name')
+        .exec((err, player) => {
+            if (err || !player) {
+                return res.status(400).json({
+                    error: "Player not found"
+                });
+            }
+            req.player = player;
+            next();
     })
 }
 
@@ -69,7 +71,15 @@ exports.addPlayer = (req, res) => {
                     error: errorHandler(err)
                 })
             }
-            res.json(result);
+            result.populate('team', '_id name')
+                .execPopulate((err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: errorHandler(err)
+                        })
+                    }
+                    res.json(result)
+                });
         });
     });
 };
@@ -85,6 +95,7 @@ exports.getPlayers = (req, res) => {
     Player.find({ user: req.profile._id })
         .select('-photo')
         .sort([[ sort, order ]])
+        .populate('team', '_id name')
         .limit(limit)
         .skip(skip)
         .exec((err, players) => {
@@ -170,7 +181,15 @@ exports.updatePlayer = (req, res) => {
                     error: errorHandler(err)
                 })
             }
-            res.json(result);
+            result.populate('team', '_id name')
+                .execPopulate((err, result) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: errorHandler(err)
+                        })
+                    }
+                    res.json(result)
+                });
         });
     });
 };
@@ -181,7 +200,9 @@ exports.updateStatus = (req, res) => {
         { _id: req.player._id },
         { isActive: !status },
         { new: true }
-    ).exec((err, player) => {
+    )
+    .populate('team', '_id name')
+    .exec((err, player) => {
         if (err) {
             return res.status(400).json({
                 error: 'player not found'
