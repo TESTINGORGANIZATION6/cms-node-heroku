@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema
 
 const coachSchema = new mongoose.Schema({
     firstname: {
@@ -34,10 +35,8 @@ const coachSchema = new mongoose.Schema({
         default: true
     },
     team: {
-        type: String,
-        required: true,
-        trim: true,
-        maxlength: 32
+        type: ObjectId,
+        ref: 'Team',
     },
     philosophy: {
         type: String,
@@ -46,6 +45,11 @@ const coachSchema = new mongoose.Schema({
     photo:{
         data: Buffer,
         contentType: String
+    },
+    user:{
+        type: ObjectId,
+        ref: 'User',
+        required: true
     }
 }, { timestamps: true })
 

@@ -774,10 +774,7 @@
             "content": {
               "application:json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CoachInfo"
-                  }
+                  "$ref": "#/components/schemas/Coaches"
                 }
               }
             }
@@ -1332,7 +1329,7 @@
                 },
                 "team": {
                   "type": "string",
-                  "example": "England"
+                  "example": "5e8fe0e7d18eaf5ab8fafeed"
                 },
                 "position": {
                   "type": "string",
@@ -1387,11 +1384,15 @@
           },
           "team": {
             "type": "string",
-            "example": "Mumbai"
+            "example": "5e8fe0e7d18eaf5ab8fafeed"
           },
           "photo": {
             "type": "string",
             "format": "binary"
+          },
+          "user": {
+            "type": "string",
+            "example": "5e8fe0e7d18eaf5ab8faiopa"
           }
         }
       },
@@ -1452,7 +1453,7 @@
           },
           "team": {
             "type": "string",
-            "example": "Mumbai"
+            "example": "5e8fe0e7d18eaf5ab8faiopa"
           }
         }
       },
@@ -1489,7 +1490,7 @@
           },
           "team": {
             "type": "string",
-            "example": "England"
+            "example": "5e8fe0e7d18eaf5ab8faiopa"
           },
           "createdAt": {
             "type": "string",
@@ -1498,6 +1499,67 @@
           "updatedAt": {
             "type": "string",
             "format": "date"
+          }
+        }
+      },
+      "Coaches": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "number",
+            "example": 2
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5e6d4169de71e629c4d72417"
+                },
+                "firstname": {
+                  "type": "string",
+                  "example": "marcus"
+                },
+                "lastname": {
+                  "type": "string",
+                  "example": "rashford"
+                },
+                "age": {
+                  "type": "number",
+                  "example": 21
+                },
+                "role": {
+                  "type": "string",
+                  "example": "player"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "team": {
+                  "type": "string",
+                  "example": "5e8fe0e7d18eaf5ab8fafeed"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
           }
         }
       },
