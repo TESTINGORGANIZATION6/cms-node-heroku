@@ -951,6 +951,82 @@
           }
         }
       }
+    },
+    "/updateteam/{teamId}/{userId}": {
+      "put": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Update Team",
+        "description": "Update tean information in database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "teamId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the team to get"
+          }
+        ],
+        "requestBody": {
+          "description": "The team to update.",
+          "content": {
+            "application:json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TeamPlayers"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TeamCoach"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TeamStaff"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Team updated succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedTeam"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Team update failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "All fields are required"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "team"
+      }
     }
   },
   "components": {
@@ -1849,6 +1925,46 @@
                   "type": "string",
                   "format": "date"
                 }
+              }
+            }
+          }
+        }
+      },
+      "TeamPlayers": {
+        "type": "object",
+        "properties": {
+          "players": {
+            "type": "object",
+            "example": "player"
+          }
+        }
+      },
+      "TeamCoach": {
+        "type": "object",
+        "properties": {
+          "teamCoach": {
+            "type": "object",
+            "example": "coach"
+          }
+        }
+      },
+      "TeamStaff": {
+        "type": "object",
+        "properties": {
+          "staff": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Gary"
+              },
+              "designation": {
+                "type": "string",
+                "example": "GK special"
+              },
+              "contact": {
+                "type": "string",
+                "example": 128212122122
               }
             }
           }

@@ -60,4 +60,59 @@ exports.teamById = (req, res, next, id) => {
 
 exports.getTeam = (req, res) => {
     return res.json(req.team);
-}
+};
+
+exports.updateTeam = (req, res) => {
+	if (req.body.players) {
+		const minAge = req.team.ageGroup.slice(0,1);
+		const maxAge = req.team.ageGroup.slice(3,4);
+		if (req.body.players.age > maxAge || req.body.players.age < minAge) {
+			return res.json({
+				error: 'player do not fit into the age-group'
+			})
+		}
+		Team.findByIdAndUpdate(
+			{ _id: req.team._id },
+			{ $push: { "players": req.body.players} },
+			{ new: true }
+		).exec((err, team) => {
+			if (err) {
+				return res.status(400).json({
+					err: errorHandler(err),
+				});
+			}
+			return res.json(team)
+		});
+	}
+
+	if (req.body.teamCoach) {
+		Team.findByIdAndUpdate(
+			{ _id: req.team._id },
+			{ teamCoach: req.body.teamCoach },
+			{ new: true }
+		).exec((err, team) => {
+			if (err) {
+				return res.status(400).json({
+					err: errorHandler(err),
+				});
+			}
+			return res.json(team)
+		});
+	}
+
+	if (req.body.staff) {
+		Team.findByIdAndUpdate(
+			{ _id: req.team._id },
+			{ $push: {"staff": req.body.staff } },
+			{ new: true }
+		).exec((err, team) => {
+			if (err) {
+				return res.status(400).json({
+					err: errorHandler(err),
+				});
+			}
+			return res.json(team)
+		});
+	}
+
+};
