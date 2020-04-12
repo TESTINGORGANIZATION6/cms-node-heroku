@@ -12,7 +12,12 @@ const teamSchema = new mongoose.Schema({
         type: String,
         required: true,
         maxlength: 50,
-        trim: true
+        trim: true,
+        unique: true
+    },
+    description: {
+        type: String,
+        required: true
     },
     ageGroup: {
         type: String,
@@ -20,14 +25,14 @@ const teamSchema = new mongoose.Schema({
         trim: true
     },
     teamCoach: {
-        type: String
+        type: Object
     },
     players: {
-        type: String
+        type: Array
     },
     user:{
         type: ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true
     },
     staff: [staffSchema]
