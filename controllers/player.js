@@ -212,3 +212,42 @@ exports.updateStatus = (req, res) => {
         res.json(player)
     });
 };
+
+// query params = ?orderBy=createdAt&sortBy=desc&limit=3&maxAge=100&minAge=0
+exports.availablePlayers = (req, res) => {
+    const order = req.query.orderBy ? req.query.orderBy : 'asc';
+    const sort = req.query.sortBy ? req.query.sortBy : '_id';
+    const limit = req.query.limit ? parseInt(req.query.limit) : 3;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const skip = (page - 1)*limit
+    const minAge = req.query.minAge ? req.query.minAge : 0
+    const maxAge = req.query.maxAge ? req.query.maxAge : 100
+
+    Player.find({ 
+            user: req.profile._id,
+            team: null,
+            age: { $gt: minAge, $lt: maxAge }
+        })
+        .select('-photo -team')
+        .sort([[ sort, order ]])
+        .limit(limit)
+        .skip(skip)
+        .exec((err, players) => {
+            // To do, make this in one query
+            Player.countDocuments({ user: req.profile._id })
+                .exec((error, totalPages) => {
+                    if (!error) {
+                        if (err) {
+                            return res.status(400).json({
+                                error: 'players not found'
+                            });
+                        }
+                        res.json({
+                            totalPages: Math.ceil(totalPages/limit),
+                            page,
+                            result: players
+                        });
+                    }
+                });
+    });
+};
