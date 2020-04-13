@@ -9,7 +9,8 @@ const {
     getPlayers,
     deletePlayer,
     updatePlayer,
-    updateStatus
+    updateStatus,
+    availablePlayers
 } = require('../controllers/player');
 
 const {
@@ -25,6 +26,7 @@ router.get('/getplayers/:userId', requiredSignIn, isAuth, isAdmin, getPlayers);
 router.delete('/deleteplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin, deletePlayer);
 router.put('/updateplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updatePlayer);
 router.put('/updateplayerstatus/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updateStatus);
+router.get('/availableplayers/:userId', requiredSignIn, isAuth, isAdmin, availablePlayers);
 
 router.param('userId', userById);
 router.param('playerId', playerById);

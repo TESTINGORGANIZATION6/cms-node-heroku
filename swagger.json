@@ -518,6 +518,51 @@
         }
       }
     },
+    "/availableplayers/{userId}": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Get Available Players",
+        "description": "Get all available players",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Players information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailablePlayers"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Players not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No player found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/addcoach/{userId}": {
       "post": {
         "tags": [
@@ -1433,6 +1478,67 @@
                       "example": "Mumbai"
                     }
                   }
+                },
+                "position": {
+                  "type": "string",
+                  "example": "ST"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AvailablePlayers": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "number",
+            "example": 2
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "5e6d4169de71e629c4d72417"
+                },
+                "firstname": {
+                  "type": "string",
+                  "example": "marcus"
+                },
+                "lastname": {
+                  "type": "string",
+                  "example": "rashford"
+                },
+                "age": {
+                  "type": "number",
+                  "example": 21
+                },
+                "role": {
+                  "type": "string",
+                  "example": "player"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
                 },
                 "position": {
                   "type": "string",
