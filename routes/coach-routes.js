@@ -24,7 +24,7 @@ router.get('/getcoach/:coachId/:userId', requiredSignIn, isAuth, getCoach);
 router.get('/getcoaches/:userId', requiredSignIn, isAuth, isAdmin, getCoaches);
 router.put('/updatecoach/:coachId/:userId', requiredSignIn, isAuth, isAdmin, updateCoach);
 router.delete('/deletecoach/:coachId/:userId', requiredSignIn, isAuth, isAdmin, deleteCoach);
-router.put('/updatecoachstatus/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updateStatus);
+router.put('/updatecoachstatus/:coachId/:userId', requiredSignIn, isAuth, isAdmin, updateStatus);
 
 router.param('userId', userById);
 router.param('coachId', coachById)
