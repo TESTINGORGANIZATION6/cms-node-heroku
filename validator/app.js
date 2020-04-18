@@ -16,9 +16,24 @@ exports.userSignupValidator = (req, res, next) => {
         .matches(/\d/)
         .withMessage('Password must contain a number')
     const errors = req.validationErrors()
-    if(errors){
+    if (errors) {
         const error = errors.map(err => err.msg)[0]
         return res.status(400).json({ error: error })
     }
     next()
+};
+
+
+
+//***************************************PORTFOLIO VALIDATIONS****************************************************************** */
+exports.portfolioUserStatusChangeValidator = (req, res, next) => {
+    req.check('UserId', 'UserId is mandatory').notEmpty()
+    req.check('Status', 'Status true or false is mandatory').notEmpty().isIn([true, false])
+    const errors = req.validationErrors()
+    if (errors) {
+        const error = errors.map(err => err.msg)[0]
+        return res.status(200).json({ status: false, message: error })
+    }
+    next()
 }
+//***************************************PORTFOLIO VALIDATIONS****************************************************************** */
