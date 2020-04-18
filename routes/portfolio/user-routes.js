@@ -3,11 +3,14 @@ const { getUsers, changeUserStatus } = require('../../controllers/Portfolio/port
 const { portfolioUserStatusChangeValidator } = require('../../validator/app')
 const {
     requiredSignIn,
-    isAuth
+    isAuth,
+    userById
 } = require('../../controllers/user');
 
-router.get('/cms-portfolio-api/getusers/:userId',requiredSignIn, getUsers);
+router.get('/cms-portfolio-api/getusers/:userId',requiredSignIn,isAuth, getUsers);
 
-router.post('/cms-portfolio-api/changeuserstatus/:userId',requiredSignIn, portfolioUserStatusChangeValidator, changeUserStatus);
+router.post('/cms-portfolio-api/changeuserstatus/:userId',requiredSignIn,isAuth, portfolioUserStatusChangeValidator, changeUserStatus);
+
+router.param('userId', userById);
 
 module.exports = router;

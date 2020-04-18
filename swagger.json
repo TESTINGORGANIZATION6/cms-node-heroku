@@ -1093,7 +1093,7 @@
             "in": "path",
             "name": "userId",
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "required": true,
             "description": "Numeric ID of the user to get"
@@ -1124,10 +1124,10 @@
             "in": "path",
             "name": "userId",
             "schema": {
-              "type": "integer"
+              "type": "string"
             },
             "required": true,
-            "description": "Numeric ID of the user to get"
+            "description": "ID of the user to get"
           }
         ],
         "requestBody": {
