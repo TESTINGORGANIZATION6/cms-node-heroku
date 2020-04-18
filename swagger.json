@@ -11,6 +11,9 @@
   "servers": [
     {
       "url": "https://salty-citadel-56178.herokuapp.com/api/v1"
+    },
+    {
+      "url": "http://localhost:8000/api/v1"
     }
   ],
   "paths": {
@@ -997,6 +1000,59 @@
         }
       }
     },
+    "/cms-portfolio-api/getusers": {
+      "get": {
+        "tags": [
+          "Cms-Portfolio-User"
+        ],
+        "summary": "Get Users",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Get Details for users regisered",
+        "operationId": "Get",
+        "responses": {
+          "400": {
+            "description": "error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/cms-portfolio-api/changeuserstatus": {
+      "post": {
+        "tags": [
+          "Cms-Portfolio-User"
+        ],
+        "summary": "Enable Disable User",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "The auto generated userid needed and staus",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/portfolio-UserChangeStaus"
+              }
+            }
+          },
+          "required": true
+        },
+        "description": "Enable Disable Player",
+        "operationId": "Post",
+        "responses": {
+          "400": {
+            "description": "error",
+            "content": {}
+          }
+        }
+      }
+    },
     "/updateteam/{teamId}/{userId}": {
       "put": {
         "tags": [
@@ -1108,12 +1164,12 @@
       },
       "LoginUser": {
         "required": [
-          "name",
+          "username",
           "password"
         ],
         "type": "object",
         "properties": {
-          "name": {
+          "username": {
             "type": "string",
             "example": "rashy07"
           },
@@ -2073,6 +2129,19 @@
                 "example": 128212122122
               }
             }
+          }
+        }
+      },
+      "portfolio-UserChangeStaus": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "example": "hdsfj893ff84f484884"
+          },
+          "Status": {
+            "type": "boolean",
+            "example": false
           }
         }
       },

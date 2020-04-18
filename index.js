@@ -10,15 +10,16 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
 
 //mongodb connection
-const mongoose = require('mongoose')
+var mongoose = require('mongoose');
+
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true
-}).then( () => {
+}).then(() => {
     console.log('Connection has been made, now make fireworks...')
-})
+});
 
 //middleware
 app.use(morgan('dev'))
@@ -35,6 +36,9 @@ app.use('/api/v1', require('./routes/player-routes'))
 app.use('/api/v1', require('./routes/coach-routes'))
 app.use('/api/v1', require('./routes/team-routes'))
 app.use('/api/v1', require('./routes/slack-routes'))
+
+//portfolio cms routes
+app.use('/api/v1', require('./routes/portfolio/user-routes'))
 
 //routes
 app.get('/', (req, res) => {
