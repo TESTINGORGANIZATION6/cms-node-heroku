@@ -6,8 +6,8 @@ const {
     isAuth
 } = require('../../controllers/user');
 
-router.get('/cms-portfolio-api/getusers',requiredSignIn, getUsers);
+router.get('/cms-portfolio-api/getusers/:userId',requiredSignIn, getUsers);
 
-router.post('/cms-portfolio-api/changeuserstatus',requiredSignIn, portfolioUserStatusChangeValidator, changeUserStatus);
+router.post('/cms-portfolio-api/changeuserstatus/:userId',requiredSignIn, portfolioUserStatusChangeValidator, changeUserStatus);
 
 module.exports = router;

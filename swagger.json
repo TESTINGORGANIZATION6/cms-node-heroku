@@ -999,60 +999,7 @@
           }
         }
       }
-    },
-    "/cms-portfolio-api/getusers": {
-      "get": {
-        "tags": [
-          "Cms-Portfolio-User"
-        ],
-        "summary": "Get Users",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "description": "Get Details for users regisered",
-        "operationId": "Get",
-        "responses": {
-          "400": {
-            "description": "error",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/cms-portfolio-api/changeuserstatus": {
-      "post": {
-        "tags": [
-          "Cms-Portfolio-User"
-        ],
-        "summary": "Enable Disable User",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "description": "The auto generated userid needed and staus",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/portfolio-UserChangeStaus"
-              }
-            }
-          },
-          "required": true
-        },
-        "description": "Enable Disable Player",
-        "operationId": "Post",
-        "responses": {
-          "400": {
-            "description": "error",
-            "content": {}
-          }
-        }
-      }
-    },
+    },    
     "/updateteam/{teamId}/{userId}": {
       "put": {
         "tags": [
@@ -1127,6 +1074,81 @@
           }
         },
         "x-codegen-request-body-name": "team"
+      }
+    },
+    "/cms-portfolio-api/getusers/{userId}": {
+      "get": {
+        "tags": [
+          "Cms-Portfolio-User"
+        ],
+        "summary": "Get Users",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Get Details for users regisered",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get"
+          }
+        ],
+        "operationId": "Get",
+        "responses": {
+          "400": {
+            "description": "error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/cms-portfolio-api/changeuserstatus/{userId}": {
+      "post": {
+        "tags": [
+          "Cms-Portfolio-User"
+        ],
+        "summary": "Enable Disable User",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the user to get"
+          }
+        ],
+        "requestBody": {
+          "description": "The auto generated userid needed and staus",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/portfolio-UserChangeStaus"
+              }
+            }
+          },
+          "required": true
+        },
+        "description": "Enable Disable Player",
+        "operationId": "Post",
+        "responses": {
+          "400": {
+            "description": "error",
+            "content": {}
+          }
+        }
       }
     }
   },
