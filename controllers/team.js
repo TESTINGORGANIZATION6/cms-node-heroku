@@ -1,5 +1,7 @@
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Team = require('../models/teams');
+const Player = require('../models/players');
+const Coach = require('../models/coaches');
 
 exports.addTeam = (req, res) => {
     const team = new Team(req.body);
@@ -64,9 +66,8 @@ exports.getTeam = (req, res) => {
 
 exports.updateTeam = (req, res) => {
 	if (req.body.players) {
-		const minAge = req.team.ageGroup.slice(0,1);
-		const maxAge = req.team.ageGroup.slice(3,4);
-		if (req.body.players.age > maxAge || req.body.players.age < minAge) {
+		const maxAge = req.team.ageGroup;
+		if (req.body.players.age >= maxAge) {
 			return res.json({
 				error: 'player do not fit into the age-group'
 			})
@@ -81,6 +82,13 @@ exports.updateTeam = (req, res) => {
 					err: errorHandler(err),
 				});
 			}
+			Player.findByIdAndUpdate(
+				{ _id: req.body.players._id },
+				{ team: req.team._id },
+				{ new: true }
+			).exec((err, player) => {
+				console.log(err, player)
+			})
 			return res.json(team)
 		});
 	}
@@ -96,6 +104,13 @@ exports.updateTeam = (req, res) => {
 					err: errorHandler(err),
 				});
 			}
+			Coach.findByIdAndUpdate(
+				{ _id: req.body.teamCoach._id },
+				{ team: req.team._id },
+				{ new: true }
+			).exec((err, coach) => {
+				console.log(err, coach)
+			})
 			return res.json(team)
 		});
 	}

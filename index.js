@@ -10,7 +10,7 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
 
 //mongodb connection
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
