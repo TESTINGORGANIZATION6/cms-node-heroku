@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Coderlust",
+    "title": "Hexovo",
     "description": "This is a sample apis for football website. All the apis work with Oauth 2.0 except singup and signin. Bearere token is must for all the other APIs.",
     "contact": {
       "email": "prachit.patil@codeburst.io"
@@ -843,6 +843,51 @@
         }
       }
     },
+    "/getallcoaches/{userId}": {
+      "get": {
+        "tags": [
+          "Coach"
+        ],
+        "summary": "Get Coaches",
+        "description": "Get all coaches",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coach information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllCoaches"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coach not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No coach found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/addteam/{userId}": {
       "post": {
         "tags": [
@@ -985,21 +1030,21 @@
             }
           },
           "400": {
-            "description": "Team creation failed",
+            "description": "Team operation failed",
             "content": {
               "application:json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
                 },
                 "example": {
-                  "message": "Team creation failed"
+                  "message": "Team operation failed"
                 }
               }
             }
           }
         }
       }
-    },    
+    },
     "/updateteam/{teamId}/{userId}": {
       "put": {
         "tags": [
@@ -1074,6 +1119,51 @@
           }
         },
         "x-codegen-request-body-name": "team"
+      }
+    },
+    "/getallteams/{userId}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Get Teams only name and id",
+        "description": "Get all teams from the database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTeams"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Team operation failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Team operation failed"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/cms-portfolio-api/getusers/{userId}": {
@@ -1877,6 +1967,22 @@
           }
         }
       },
+      "AllCoaches": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "5e6d4169de71e629c4d72417"
+            },
+            "firstname": {
+              "type": "string",
+              "example": "Jose"
+            }
+          }
+        }
+      },
       "AddTeam": {
         "type": "object",
         "properties": {
@@ -2110,6 +2216,22 @@
                   "format": "date"
                 }
               }
+            }
+          }
+        }
+      },
+      "AllTeams": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "5e6d4169de71e629c4d72417"
+            },
+            "name": {
+              "type": "string",
+              "example": "Pune"
             }
           }
         }

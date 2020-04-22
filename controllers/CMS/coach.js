@@ -205,3 +205,16 @@ exports.updateStatus = (req, res) => {
         res.json(coach)
     });
 };
+
+exports.getAllCoaches = (req, res) => {
+    Coach.find({ user: req.profile._id, isActive: true })
+        .select('_id firstname')
+        .exec((err, coaches) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'no available coaches'
+                });
+            }
+            return res.json(coaches)
+        });
+}

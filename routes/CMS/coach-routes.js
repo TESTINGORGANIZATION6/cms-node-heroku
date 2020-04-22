@@ -9,7 +9,8 @@ const {
     getCoaches,
     updateCoach,
     updateStatus,
-    deleteCoach
+    deleteCoach,
+    getAllCoaches
 } = require('../../controllers/CMS/coach');
 
 const {
@@ -25,6 +26,7 @@ router.get('/getcoaches/:userId', requiredSignIn, isAuth, isAdmin, getCoaches);
 router.put('/updatecoach/:coachId/:userId', requiredSignIn, isAuth, isAdmin, updateCoach);
 router.delete('/deletecoach/:coachId/:userId', requiredSignIn, isAuth, isAdmin, deleteCoach);
 router.put('/updatecoachstatus/:coachId/:userId', requiredSignIn, isAuth, isAdmin, updateStatus);
+router.get('/getallcoaches/:userId', requiredSignIn, isAuth, isAdmin, getAllCoaches);
 
 router.param('userId', userById);
 router.param('coachId', coachById)

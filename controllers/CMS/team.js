@@ -79,7 +79,7 @@ exports.updateTeam = (req, res) => {
 		).exec((err, team) => {
 			if (err) {
 				return res.status(400).json({
-					err: errorHandler(err),
+					error: errorHandler(err),
 				});
 			}
 			Player.findByIdAndUpdate(
@@ -101,7 +101,7 @@ exports.updateTeam = (req, res) => {
 		).exec((err, team) => {
 			if (err) {
 				return res.status(400).json({
-					err: errorHandler(err),
+					error: errorHandler(err),
 				});
 			}
 			Coach.findByIdAndUpdate(
@@ -123,7 +123,7 @@ exports.updateTeam = (req, res) => {
 		).exec((err, team) => {
 			if (err) {
 				return res.status(400).json({
-					err: errorHandler(err),
+					error: errorHandler(err),
 				});
 			}
 			return res.json(team)
@@ -131,3 +131,16 @@ exports.updateTeam = (req, res) => {
 	}
 
 };
+
+exports.getAllTeams = (req, res) => {
+	Team.find({ user: req.profile._id })
+		.select('_id name')
+		.exec((err, teams) => {
+			if(err) {
+				return res.json({
+					error: errorHandler(err)
+				});
+			}
+			return res.json(teams)
+		});
+}
