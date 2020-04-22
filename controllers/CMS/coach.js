@@ -1,8 +1,8 @@
 const formidable = require('formidable');
 const _ = require('lodash');
 const fs = require('fs');
-const Coach = require('../models/coaches');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+const Coach = require('../../models/CMS/coaches');
+const { errorHandler } = require('../../helpers/dbErrorHandler');
 
 exports.coachById = (req, res, next, id) => {
     Coach.findById(id)

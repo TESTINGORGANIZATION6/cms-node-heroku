@@ -4,7 +4,7 @@ const {
     postmessage,
     getmessageById,
     getmessage
-} = require('../controllers/slack');
+} = require('../../controllers/CMS/slack');
 
 router.post('/postmessage', postmessage);
 router.get('/getmessage/:messageId', getmessage);

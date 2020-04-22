@@ -1,5 +1,5 @@
-const User = require('../models/users');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+const User = require('../../models/CMS/users');
+const { errorHandler } = require('../../helpers/dbErrorHandler');
 
 const jwt = require('jsonwebtoken'); //to generate token for sign in
 const expressJwt = require('express-jwt'); //for authorization

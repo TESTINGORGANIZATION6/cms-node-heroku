@@ -11,14 +11,14 @@ const {
     updatePlayer,
     updateStatus,
     availablePlayers
-} = require('../controllers/player');
+} = require('../../controllers/CMS/player');
 
 const {
     requiredSignIn,
     isAuth,
     isAdmin,
     userById
-} = require('../controllers/user');
+} = require('../../controllers/CMS/user');
 
 router.get('/getplayer/:playerId/:userId', requiredSignIn, isAuth, getPlayer);
 router.post('/addplayer/:userId', requiredSignIn, isAuth, addPlayer);

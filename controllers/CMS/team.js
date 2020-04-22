@@ -1,7 +1,7 @@
-const { errorHandler } = require('../helpers/dbErrorHandler');
-const Team = require('../models/teams');
-const Player = require('../models/players');
-const Coach = require('../models/coaches');
+const { errorHandler } = require('../../helpers/dbErrorHandler');
+const Team = require('../../models/CMS/teams');
+const Player = require('../../models/CMS/players');
+const Coach = require('../../models/CMS/coaches');
 
 exports.addTeam = (req, res) => {
     const team = new Team(req.body);

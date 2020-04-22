@@ -1,6 +1,6 @@
-const Question = require('../models/queries');
+const Question = require('../../models/CMS/queries');
 const Slack = require('slack-node');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+const { errorHandler } = require('../../helpers/dbErrorHandler');
 
 webhookUri = process.env.SLACK_URI
 let slack = new Slack();

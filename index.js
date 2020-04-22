@@ -31,11 +31,11 @@ app.use(cors())
 
 //define routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use('/api/v1', require('./routes/user-routes'))
-app.use('/api/v1', require('./routes/player-routes'))
-app.use('/api/v1', require('./routes/coach-routes'))
-app.use('/api/v1', require('./routes/team-routes'))
-app.use('/api/v1', require('./routes/slack-routes'))
+app.use('/api/v1', require('./routes/CMS/user-routes'))
+app.use('/api/v1', require('./routes/CMS/player-routes'))
+app.use('/api/v1', require('./routes/CMS/coach-routes'))
+app.use('/api/v1', require('./routes/CMS/team-routes'))
+app.use('/api/v1', require('./routes/CMS/slack-routes'))
 
 //portfolio cms routes
 app.use('/api/v1', require('./routes/portfolio/user-routes'))
