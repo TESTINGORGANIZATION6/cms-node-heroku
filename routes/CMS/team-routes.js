@@ -6,7 +6,7 @@ const {
     isAuth,
     requiredSignIn,
     userById
-} = require('../controllers/user');
+} = require('../../controllers/CMS/user');
 
 const {
     addTeam,
@@ -14,7 +14,7 @@ const {
     getTeams,
     teamById,
     updateTeam
-} = require('../controllers/team')
+} = require('../../controllers/CMS/team')
 
 router.post('/addteam/:userId', requiredSignIn, isAuth, addTeam)
 router.get('/getteams/:userId', requiredSignIn, isAuth, getTeams)

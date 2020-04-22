@@ -5,7 +5,7 @@ const {
     requiredSignIn,
     isAuth,
     userById
-} = require('../../controllers/user');
+} = require('../../controllers/CMS/user');
 
 router.get('/cms-portfolio-api/getusers/:userId',requiredSignIn,isAuth, getUsers);
 

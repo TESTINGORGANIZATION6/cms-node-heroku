@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 //import validator
-const { userSignupValidator } = require('../validator/app')
+const { userSignupValidator } = require('../../validator/app')
 
 //import controllers
 const { signup, 
@@ -14,7 +14,7 @@ const { signup,
         isAdmin,
         read,
         update,
-    } = require('../controllers/user')
+    } = require('../../controllers/CMS/user')
 
 router.post('/signup', userSignupValidator, signup)
 router.post('/signin', signin)

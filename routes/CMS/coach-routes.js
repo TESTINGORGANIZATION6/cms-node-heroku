@@ -10,14 +10,14 @@ const {
     updateCoach,
     updateStatus,
     deleteCoach
-} = require('../controllers/coach');
+} = require('../../controllers/CMS/coach');
 
 const {
     requiredSignIn,
     isAuth,
     isAdmin,
     userById
-} = require('../controllers/user')
+} = require('../../controllers/CMS/user')
 
 router.post('/addcoach/:userId', requiredSignIn, isAuth, addCoach);
 router.get('/getcoach/:coachId/:userId', requiredSignIn, isAuth, getCoach);
