@@ -14,7 +14,8 @@ const {
     getTeams,
     teamById,
     updateTeam,
-    getAllTeams
+    getAllTeams,
+    updateStatus
 } = require('../../controllers/CMS/team')
 
 router.post('/addteam/:userId', requiredSignIn, isAuth, addTeam)
@@ -22,6 +23,7 @@ router.get('/getteams/:userId', requiredSignIn, isAuth, getTeams)
 router.get('/getteam/:teamId/:userId', requiredSignIn, isAuth, getTeam)
 router.put('/updateteam/:teamId/:userId', requiredSignIn, isAuth, updateTeam)
 router.get('/getallteams/:userId', requiredSignIn, isAuth, getAllTeams)
+router.get('/updateteamstatus/:teamId/:userId', requiredSignIn, isAuth, updateStatus)
 
 router.param('userId', userById);
 router.param('teamId', teamById);
