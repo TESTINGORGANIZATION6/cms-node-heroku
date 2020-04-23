@@ -566,6 +566,71 @@
         }
       }
     },
+    "/updateplayerteam/{playerId}/{userId}": {
+      "put": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Update Player team",
+        "description": "Update player team in the database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          },
+          {
+            "in": "path",
+            "name": "playerId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the player to get"
+          }
+        ],
+        "requestBody": {
+          "description": "The team to update.",
+          "content": {
+            "application:json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerTeam"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Player team updated succesfully",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedPlayer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Player team update failed",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "No player found"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "player"
+      }
+    },
     "/addcoach/{userId}": {
       "post": {
         "tags": [
@@ -1166,6 +1231,60 @@
         }
       }
     },
+    "/updateteamstatus/{teamId}/{userId}": {
+      "get": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Update Team status",
+        "description": "update team status in the database",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Team ID"
+          },
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the signed-in user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team information",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedTeam"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Team not found",
+            "content": {
+              "application:json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Team not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/cms-portfolio-api/getusers/{userId}": {
       "get": {
         "tags": [
@@ -1443,6 +1562,15 @@
           "photo": {
             "type": "string",
             "format": "binary"
+          }
+        }
+      },
+      "PlayerTeam": {
+        "type": "object",
+        "properties": {
+          "team": {
+            "type": "string",
+            "example": "5e6d4169de71e629c4d72417"
           }
         }
       },
@@ -2037,6 +2165,10 @@
               "user": {
                 "type": "string",
                 "example": "5e80abc8dacad100170561b5"
+              },
+              "isActive": {
+                "type": "string",
+                "example": true
               },
               "staff": {
                 "type": "array",
