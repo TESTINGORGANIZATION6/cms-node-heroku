@@ -35,6 +35,10 @@ const teamSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
+    isActive:{
+        type: Boolean,
+        default: true
+    },
     staff: [staffSchema]
 }, { timestamps: true });
 

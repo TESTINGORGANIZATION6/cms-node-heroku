@@ -144,3 +144,20 @@ exports.getAllTeams = (req, res) => {
 			return res.json(teams)
 		});
 }
+
+exports.updateStatus = (req, res) => {
+    status = req.team.isActive
+    Team.findOneAndUpdate(
+        { _id: req.team._id },
+        { isActive: !status },
+        { new: true }
+    )
+    .exec((err, team) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'team not found'
+            });
+        }
+        res.json(team)
+    });
+};
