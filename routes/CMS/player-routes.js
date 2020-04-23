@@ -10,7 +10,9 @@ const {
     deletePlayer,
     updatePlayer,
     updateStatus,
-    availablePlayers
+    availablePlayers,
+    updatePlayerTeam,
+    updatePlayerinTeam
 } = require('../../controllers/CMS/player');
 
 const {
@@ -27,6 +29,7 @@ router.delete('/deleteplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin
 router.put('/updateplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updatePlayer);
 router.put('/updateplayerstatus/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updateStatus);
 router.get('/availableplayers/:userId', requiredSignIn, isAuth, isAdmin, availablePlayers);
+router.put('/updateplayerteam/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updatePlayerinTeam, updatePlayerTeam);
 
 router.param('userId', userById);
 router.param('playerId', playerById);

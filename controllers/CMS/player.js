@@ -3,6 +3,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const Player = require('../../models/CMS/players');
 const { errorHandler } = require('../../helpers/dbErrorHandler');
+const Team = require('../../models/CMS/teams');
 
 exports.playerById = (req, res, next, id) => {
     Player.findById(id)
@@ -251,4 +252,86 @@ exports.availablePlayers = (req, res) => {
                     }
                 });
     });
+};
+
+exports.updatePlayerTeam = (req, res) => {
+    if(req.body.team === 'null') {
+        Player.findOneAndUpdate(
+            { _id: req.player._id },
+            { $unset: { team: 1 }},
+            { new: true }
+        ).exec((err, updatedPlayer) => {
+            if(err) {
+                return res.status(400).json({
+                    error: 'player not found'
+                });
+            }
+            return res.json(updatedPlayer)
+        });
+    } else {
+        Player.findOneAndUpdate(
+            { _id: req.player._id },
+            { team: req.body.team },
+            { new: true }
+        )
+        .exec((err, player) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'player not found'
+                });
+            }
+            player.photo = undefined;
+            res.json(player)
+        });
+    }
+};
+
+exports.updatePlayerinTeam = (req, res, next) => {
+    if(req.body.team !== 'null') {
+        const addPlayer = {
+            firstname: req.player.firstname,
+            lastname: req.player.lastname,
+            age: req.player.age,
+            _id: req.player._id
+        }
+
+        Team.findOneAndUpdate(
+            { _id: req.body.team },
+            { $push: { "players": addPlayer }},
+            { new: true }
+        ).exec((err, team) => {
+            if(err) {
+                return res.status(400).json({
+                    error: 'Invalid team'
+                })
+            } 
+            console.log(team)
+            next()
+        })
+    } else {
+        // If updated team is null, then first pull out the players team and remove the player
+        Player.findOne({ _id: req.player._id })
+            .exec((err, player) => {
+                if(err) {
+                    return res.json({
+                        error: "player not found"
+                    })
+                }
+                const teamId = player.team
+                Team.findByIdAndUpdate(
+                    { _id: teamId },
+                    { $pull: { players: { _id: req.player._id }}},
+                    { new: true }
+                ).exec((err, team) => {
+                    if(err) {
+                        console.log(err)
+                        return res.status(400).json({
+                            error: 'Invalid team'
+                        })
+                    }
+                    console.log(team)
+                    next()
+                })
+            })
+    }
 };
