@@ -226,7 +226,8 @@ exports.availablePlayers = (req, res) => {
     Player.find({ 
             user: req.profile._id,
             team: null,
-            age: { $gt: minAge, $lt: maxAge }
+            age: { $gt: minAge, $lt: maxAge },
+            isActive: true
         })
         .select('-photo -team')
         .sort([[ sort, order ]])
