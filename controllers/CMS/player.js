@@ -55,7 +55,6 @@ exports.addPlayer = (req, res) => {
         }
 
         let player = new Player(fields)
-
         if (files.photo) {
             if (files.photo.size > 1000000) {
                 return res.status(400).json({
@@ -77,6 +76,28 @@ exports.addPlayer = (req, res) => {
                     if (err) {
                         return res.status(400).json({
                             error: errorHandler(err)
+                        })
+                    }
+                    if(result.team) {
+                        const addPlayer = {
+                            firstname: result.firstname,
+                            lastname: result.lastname,
+                            age: result.age,
+                            _id: result._id
+                        }
+                
+                        Team.findOneAndUpdate(
+                            { _id: result.team },
+                            { $push: { "players": addPlayer }},
+                            { new: true }
+                        ).exec((err, team) => {
+                            if(err) {
+                                console.log(err)
+                                return res.status(400).json({
+                                    error: 'Invalid team'
+                                })
+                            } 
+                            console.log(team)
                         })
                     }
                     res.json(result)
@@ -134,55 +155,60 @@ exports.deletePlayer = (req, res) => {
 };
 
 exports.updatePlayer = (req, res) => {
-    let form = new formidable.IncomingForm()
-    form.keepExtensions = true
-    form.parse(req, (err, fields, files) => {
-        if (err) {
+    // Validate the fields
+    const {
+        firstname,
+        lastname,
+        role,
+        age,
+        email,
+        position
+    } = req.fields
+
+    if (!firstname ||
+        !lastname ||
+        !role || 
+        !age || 
+        !email || 
+        !position) {
             return res.status(400).json({
-                error: "Image could not be uploaded"
-            });
+                error: "All fields are required"
+            })
+    }
+
+    let player = req.player
+    player = _.extend(player, req.fields)
+
+    const files = req.files
+    if (files.photo) {
+        if (files.photo.size > 1000000) {
+            return res.status(400).json({
+                error: "Image should be less than 1MB"
+            })
         }
-        // Validate the fields
-        const {
-            firstname,
-            lastname,
-            role,
-            age,
-            email,
-            position
-        } = fields
+        player.photo.data = fs.readFileSync(files.photo.path)
+        player.photo.contentType = files.photo.type
+    }
 
-        if (!firstname ||
-            !lastname ||
-            !role || 
-            !age || 
-            !email || 
-            !position) {
-                return res.status(400).json({
-                    error: "All fields are required"
-                })
-        }
-
-        let player = req.player
-        player = _.extend(player, fields)
-
-        if (files.photo) {
-            if (files.photo.size > 1000000) {
-                return res.status(400).json({
-                    error: "Image should be less than 1MB"
-                })
-            }
-            player.photo.data = fs.readFileSync(files.photo.path)
-            player.photo.contentType = files.photo.type
-        }
-
+    if(req.teamId) {
         player.save((err, result) => {
             if (err) {
                 return res.status(400).json({
                     error: errorHandler(err)
                 })
-            }
-            result.populate('team', '_id name')
+            } 
+            Player.findOneAndUpdate(
+                { _id: req.player._id },
+                { team: req.teamId },
+                { new: true }
+            )
+            .exec((err, player) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: 'player not found'
+                    });
+                } 
+                player.populate('team', '_id name')
                 .execPopulate((err, result) => {
                     if (err) {
                         return res.status(400).json({
@@ -191,8 +217,29 @@ exports.updatePlayer = (req, res) => {
                     }
                     res.json(result)
                 });
+            });
         });
-    });
+    } else {
+        player.save((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            Player.findOneAndUpdate(
+                { _id: result._id },
+                { $unset: { team: 1 }},
+                { new: true }
+            ).exec((err, updatedPlayer) => {
+                if(err) {
+                    return res.status(400).json({
+                        error: 'player not found'
+                    });
+                }
+                res.json(updatedPlayer)
+            });
+        });
+    }
 };
 
 exports.updateStatus = (req, res) => {
@@ -223,7 +270,7 @@ exports.availablePlayers = (req, res) => {
     const skip = (page - 1)*limit
     const minAge = req.query.minAge ? req.query.minAge : 0
     const maxAge = req.query.maxAge ? req.query.maxAge : 100
-
+    console.log(page, limit)
     Player.find({ 
             user: req.profile._id,
             team: null,
@@ -254,84 +301,78 @@ exports.availablePlayers = (req, res) => {
     });
 };
 
-exports.updatePlayerTeam = (req, res) => {
-    if(req.body.team === 'null') {
-        Player.findOneAndUpdate(
-            { _id: req.player._id },
-            { $unset: { team: 1 }},
-            { new: true }
-        ).exec((err, updatedPlayer) => {
-            if(err) {
-                return res.status(400).json({
-                    error: 'player not found'
-                });
+exports.updatePlayerinTeam = (req, res, next) => {
+    if(req.teamId) {
+        // If currentId and player team Id is same then no action
+        console.log(req.teamId, req.player.team)
+        if (req.player.team) {
+            if(req.teamId == req.player.team._id) {
+                next()
             }
-            return res.json(updatedPlayer)
-        });
+        } else {
+            const addPlayer = {
+                firstname: req.player.firstname,
+                lastname: req.player.lastname,
+                age: req.player.age,
+                _id: req.player._id
+            }
+
+            Team.findOneAndUpdate(
+                { _id: req.teamId },
+                { $push: { "players": addPlayer }},
+                { new: true }
+            ).exec((err, team) => {
+                if(err) {
+                    return res.status(400).json({
+                        error: 'Invalid team'
+                    })
+                }
+                next()
+            })
+        }
     } else {
-        Player.findOneAndUpdate(
-            { _id: req.player._id },
-            { team: req.body.team },
-            { new: true }
-        )
-        .exec((err, player) => {
-            if (err) {
-                return res.status(400).json({
-                    error: 'player not found'
-                });
+        // If updated team is null, then first pull out the players team and remove the player
+        if(!req.player.team) {
+            next()
+        } else {
+            Player.findOne({ _id: req.player._id })
+                .exec((err, player) => {
+                    if(err) {
+                        return res.json({
+                            error: "player not found"
+                        })
+                    }
+                    const teamId = player.team
+                    Team.findByIdAndUpdate(
+                        { _id: teamId },
+                        { $pull: { players: { _id: req.player._id }}},
+                        { new: true }
+                    ).exec((err, team) => {
+                        if(err) {
+                            return res.status(400).json({
+                                error: 'Invalid team'
+                            })
+                        }
+                        next()
+                    })
+                })
             }
-            player.photo = undefined;
-            res.json(player)
-        });
     }
 };
 
-exports.updatePlayerinTeam = (req, res, next) => {
-    if(req.body.team !== 'null') {
-        const addPlayer = {
-            firstname: req.player.firstname,
-            lastname: req.player.lastname,
-            age: req.player.age,
-            _id: req.player._id
+exports.getTeamParam = (req, res, next) => {
+    let form = new formidable.IncomingForm()
+    form.keepExtensions = true
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
         }
-
-        Team.findOneAndUpdate(
-            { _id: req.body.team },
-            { $push: { "players": addPlayer }},
-            { new: true }
-        ).exec((err, team) => {
-            if(err) {
-                return res.status(400).json({
-                    error: 'Invalid team'
-                })
-            } 
-            console.log(team)
-            next()
-        })
-    } else {
-        // If updated team is null, then first pull out the players team and remove the player
-        Player.findOne({ _id: req.player._id })
-            .exec((err, player) => {
-                if(err) {
-                    return res.json({
-                        error: "player not found"
-                    })
-                }
-                const teamId = player.team
-                Team.findByIdAndUpdate(
-                    { _id: teamId },
-                    { $pull: { players: { _id: req.player._id }}},
-                    { new: true }
-                ).exec((err, team) => {
-                    if(err) {
-                        console.log(err)
-                        return res.status(400).json({
-                            error: 'Invalid team'
-                        })
-                    }
-                    console.log(team)
-                    next()
-                })
-            })
-    }
+        const { team } = fields;
+        req.teamId = team;
+        req.fields = fields;
+        req.files = files;
+        next();
+    });
 };
