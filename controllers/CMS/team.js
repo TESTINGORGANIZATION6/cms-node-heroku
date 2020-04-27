@@ -5,17 +5,54 @@ const Coach = require('../../models/CMS/coaches');
 
 exports.addTeam = (req, res) => {
     const team = new Team(req.body);
-    console.log(req.body)
-    team.save((err, team) => {
-        if (err) {
-			return res.status(400).json({
-				err: errorHandler(err),
-			});
-        }
-        res.json({
-            team
-        })
-    });
+	if(req.body.players) {
+		team.save((err, team) => {
+			if (err) {
+				return res.status(400).json({
+					error: err,
+				});
+			}
+			Player.findByIdAndUpdate(
+				{ _id: req.body.players._id },
+				{ team: team._id },
+				{ new: true }
+			).exec((err, player) => {
+				console.log(err, player)
+			})
+			return res.json({
+				team
+			})
+		});
+	} else if (req.body.teamCoach) {
+		team.save((err, team) => {
+			if (err) {
+				return res.status(400).json({
+					err: errorHandler(err),
+				});
+			}
+			Coach.findByIdAndUpdate(
+				{ _id: req.body.teamCoach._id },
+				{ team: team._id },
+				{ new: true }
+			).exec((err, coach) => {
+				console.log(err, coach)
+			})
+			return res.json({
+				team
+			})
+		});
+	} else {
+		team.save((err, team) => {
+			if (err) {
+				return res.status(400).json({
+					err: errorHandler(err),
+				});
+			}
+			return res.json({
+				team
+			})
+		});
+	}
 };
 
 exports.getTeams = (req, res) => {

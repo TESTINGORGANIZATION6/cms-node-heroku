@@ -314,7 +314,10 @@ exports.updatePlayerinTeam = (req, res, next) => {
                 firstname: req.player.firstname,
                 lastname: req.player.lastname,
                 age: req.player.age,
-                _id: req.player._id
+                _id: req.player._id,
+                role: req.player.role,
+                email: req.player.email,
+                position: req.player.position
             }
 
             Team.findOneAndUpdate(
