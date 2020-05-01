@@ -12,13 +12,15 @@ exports.addTeam = (req, res) => {
 					error: err,
 				});
 			}
-			Player.findByIdAndUpdate(
-				{ _id: req.body.players._id },
-				{ team: team._id },
-				{ new: true }
-			).exec((err, player) => {
-				console.log(err, player)
-			})
+			req.body.players.forEach(player => {
+				Player.findByIdAndUpdate(
+					{ _id: player._id },
+					{ team: team._id },
+					{ new: true }
+				).exec((err, player) => {
+					console.log(err, player)
+				})
+			});
 			return res.json({
 				team
 			})
