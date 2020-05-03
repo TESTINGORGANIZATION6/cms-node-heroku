@@ -11,6 +11,7 @@ exports.getUsers = async (req, res) => {
                 'FirstName': 1,
                 'LastName': 1,
                 'ProfileStatus': 1,
+                'UserName': 1
             }
         },
         {
@@ -32,10 +33,13 @@ exports.getUsers = async (req, res) => {
                 'FirstName': 1,
                 'LastName': 1,
                 'ProfileStatus': 1,
+                'UserName': 1,
                 'Role': '$details.Role',
                 'Photo': '$details.Photo',
                 'updatedAt': '$details.updatedAt',
-                'UserId': '$details.UserId'
+                'UserId': '$details.UserId',
+                'Email': '$details.Email',
+                
             }
         },
     ]);
