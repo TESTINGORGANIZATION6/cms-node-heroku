@@ -304,35 +304,41 @@ exports.availablePlayers = (req, res) => {
 exports.updatePlayerinTeam = (req, res, next) => {
     if(req.teamId) {
         // If currentId and player team Id is same then no action
-        console.log(req.teamId, req.player.team)
         if (req.player.team) {
             if(req.teamId == req.player.team._id) {
                 next()
-            }
-        } else {
-            const addPlayer = {
-                firstname: req.player.firstname,
-                lastname: req.player.lastname,
-                age: req.player.age,
-                _id: req.player._id,
-                role: req.player.role,
-                email: req.player.email,
-                position: req.player.position
-            }
-
-            Team.findOneAndUpdate(
-                { _id: req.teamId },
-                { $push: { "players": addPlayer }},
-                { new: true }
-            ).exec((err, team) => {
-                if(err) {
-                    return res.status(400).json({
-                        error: 'Invalid team'
-                    })
+            } else {
+                const addPlayer = {
+                    firstname: req.player.firstname,
+                    lastname: req.player.lastname,
+                    age: req.player.age,
+                    _id: req.player._id,
+                    role: req.player.role,
+                    email: req.player.email,
+                    position: req.player.position
                 }
-                next()
-            })
-        }
+                Team.findOneAndUpdate(
+                    { _id: req.player.team._id },
+                    { $pull: { "players": addPlayer }},
+                    { new: true }
+                ).then((newplayer, err) => {
+                    console.log(newplayer,err)
+                    Team.findOneAndUpdate(
+                        { _id: req.teamId },
+                        { $push: { "players": addPlayer }},
+                        { new: true }
+                    ).exec((err, team) => {
+                        console.log(err, team)
+                        if(err) {
+                            return res.status(400).json({
+                                error: 'Invalid team'
+                            })
+                        }
+                        next()
+                    })
+                })
+            }
+        } 
     } else {
         // If updated team is null, then first pull out the players team and remove the player
         if(!req.player.team) {
