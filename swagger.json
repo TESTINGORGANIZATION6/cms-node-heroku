@@ -1286,17 +1286,17 @@
       }
     },
     "/cms-portfolio-api/getusers/{userId}": {
-      "get": {
+      "post": {
         "tags": [
           "Cms-Portfolio-User"
         ],
-        "summary": "Get Users",
+        "summary": "Get Users with pagination",
         "security": [
           {
             "bearerAuth": []
           }
         ],
-        "description": "Get Details for users regisered",
+        "description": "Get all registered users",
         "parameters": [
           {
             "in": "path",
@@ -1308,6 +1308,17 @@
             "description": "Numeric ID of the user to get"
           }
         ],
+        "requestBody": {
+          "description": "Object for registration",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/portfolio-users-paginations"
+              }
+            }
+          },
+          "required": true
+        },
         "operationId": "Get",
         "responses": {
           "400": {
@@ -2418,6 +2429,23 @@
           "Status": {
             "type": "boolean",
             "example": false
+          }
+        }
+      },
+      "portfolio-users-paginations": {
+        "type": "object",
+        "properties": {
+          "max_per_page": {
+            "type": "number",
+            "example": 10
+          },
+          "page_no": {
+            "type": "number",
+            "example": 1
+          },
+          "search_txt": {
+            "type": "string",
+            "example": "q"
           }
         }
       },
