@@ -71,7 +71,6 @@ exports.getUsers = async (req, res) => {
     res.send(users);
 };
 
-
 exports.changeUserStatus = async (req, res) => {
     const updateUser = await User.model('User', schm).updateOne(
         {
