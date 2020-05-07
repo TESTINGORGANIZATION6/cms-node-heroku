@@ -11,7 +11,8 @@ exports.getUsers = async (req, res) => {
                 'FirstName': 1,
                 'LastName': 1,
                 'ProfileStatus': 1,
-                'UserName': 1
+                'UserName': 1,
+                'Email': 1
             }
         },
         {
@@ -23,25 +24,50 @@ exports.getUsers = async (req, res) => {
             }
         },
         {
-            $unwind: "$details"
+            $unwind: "$details",
+            $unwind: {
+                path: "$details",
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $match: {
+                $or:
+                    [{ FirstName: { $regex: '.*' + req.body.search_txt + '.*', $options: 'i' } },
+                    { LastName: { $regex: '.*' + req.body.search_txt + '.*', $options: 'i' } },
+                    { UserName: { $regex: '.*' + req.body.search_txt + '.*', $options: 'i' } },
+                    ]
+            }
         },
         {
             $sort: { "details.updatedAt": -1 }
         },
         {
-            '$project': {
-                'FirstName': 1,
-                'LastName': 1,
-                'ProfileStatus': 1,
-                'UserName': 1,
-                'Role': '$details.Role',
-                'Photo': '$details.Photo',
-                'updatedAt': '$details.updatedAt',
-                'UserId': '$details.UserId',
-                'Email': '$details.Email',
-                
+            '$facet': {
+                pagination: [
+                    { $count: "total" },
+                    {
+                        $addFields:
+                            { page_no: req.body.page_no, toal_pages: { $ceil: { $divide: ["$total", req.body.max_per_page] } } }
+                    }],
+                data: [
+                    { $skip: req.body.max_per_page * (req.body.page_no - 1) },
+                    { $limit: req.body.max_per_page },
+                    {
+                        '$project': {
+                            'FirstName': 1,
+                            'LastName': 1,
+                            'ProfileStatus': 1,
+                            'UserName': 1,
+                            'Email': 1,
+                            'Role': { $cond: { if: { $isArray: "$details" }, then: '$details.Role', else: "" } },
+                            'Photo': { $cond: { if: { $isArray: "$details" }, then: '$details.Photo', else: "" } },
+                            'updatedAt': { $cond: { if: { $isArray: "$details" }, then: '$details.updatedAt', else: "" } },
+                            'UserId': { $cond: { if: { $isArray: "$details" }, then: '$details.UserId', else: "" } }
+                        },
+                    }]
             }
-        },
+        }
     ]);
     res.send(users);
 };

@@ -36,4 +36,15 @@ exports.portfolioUserStatusChangeValidator = (req, res, next) => {
     }
     next()
 }
+
+exports.getUsersValidator = (req, res, next) => {
+    req.check('max_per_page', 'Maximum number of data in a page is mandatory').notEmpty()
+    req.check('page_no', 'Page number is mandatory').notEmpty()
+    const errors = req.validationErrors()
+    if (errors) {
+        const error = errors.map(err => err.msg)[0]
+        return res.status(200).json({ status: false, message: error })
+    }
+    next();
+}
 //***************************************PORTFOLIO VALIDATIONS****************************************************************** */
