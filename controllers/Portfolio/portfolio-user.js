@@ -24,7 +24,6 @@ exports.getUsers = async (req, res) => {
             }
         },
         {
-            $unwind: "$details",
             $unwind: {
                 path: "$details",
                 preserveNullAndEmptyArrays: true
