@@ -12,7 +12,8 @@ const {
     updateStatus,
     availablePlayers,
     updatePlayerinTeam,
-    getTeamParam
+    getTeamParam,
+    ageValidation
 } = require('../../controllers/CMS/player');
 
 const {
@@ -23,10 +24,10 @@ const {
 } = require('../../controllers/CMS/user');
 
 router.get('/getplayer/:playerId/:userId', requiredSignIn, isAuth, getPlayer);
-router.post('/addplayer/:userId', requiredSignIn, isAuth, addPlayer);
+router.post('/addplayer/:userId', requiredSignIn, isAuth, getTeamParam, ageValidation, addPlayer);
 router.get('/getplayers/:userId', requiredSignIn, isAuth, isAdmin, getPlayers);
 router.delete('/deleteplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin, deletePlayer);
-router.put('/updateplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin, getTeamParam, updatePlayerinTeam, updatePlayer);
+router.put('/updateplayer/:playerId/:userId', requiredSignIn, isAuth, isAdmin, getTeamParam, updatePlayerinTeam, ageValidation, updatePlayer);
 router.put('/updateplayerstatus/:playerId/:userId', requiredSignIn, isAuth, isAdmin, updateStatus);
 router.get('/availableplayers/:userId', requiredSignIn, isAuth, isAdmin, availablePlayers);
 

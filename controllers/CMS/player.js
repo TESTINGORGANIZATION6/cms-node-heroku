@@ -25,84 +25,75 @@ exports.getPlayer = (req, res) => {
 }
 
 exports.addPlayer = (req, res) => {
-    let form = new formidable.IncomingForm()
-    form.keepExtensions = true
-    form.parse(req, (err, fields, files) => {
+    // Validate the fields
+    const {
+        firstname,
+        lastname,
+        role,
+        age,
+        email,
+        position
+    } = req.fields
+
+    if (!firstname ||
+        !lastname ||
+        !role || 
+        !age || 
+        !email || 
+        !position) {
+            return res.status(400).json({
+                error: "All fields are required"
+            })
+    }
+
+    let player = new Player(req.fields)
+    if (req.files.photo) {
+        if (req.files.photo.size > 1000000) {
+            return res.status(400).json({
+                error: "Image should be less than 1MB"
+            })
+        }
+        player.photo.data = fs.readFileSync(files.photo.path)
+        player.photo.contentType = req.files.photo.type
+    }
+
+    player.save((err, result) => {
         if (err) {
             return res.status(400).json({
-                error: "Image could not be uploaded"
+                error: errorHandler(err)
+            })
+        }
+        result.populate('team', '_id name')
+            .execPopulate((err, result) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: errorHandler(err)
+                    })
+                }
+                if(result.team) {
+                    const addPlayer = {
+                        firstname: result.firstname,
+                        lastname: result.lastname,
+                        age: result.age,
+                        _id: result._id
+                    }
+            
+                    Team.findOneAndUpdate(
+                        { _id: result.team },
+                        { $push: { "players": addPlayer }},
+                        { new: true }
+                    ).exec((err, team) => {
+                        if(err) {
+                            console.log(err)
+                            return res.status(400).json({
+                                error: 'Invalid team'
+                            })
+                        } 
+                        console.log(team)
+                    })
+                }
+                res.json(result)
             });
-        }
-        // Validate the fields
-        const {
-            firstname,
-            lastname,
-            role,
-            age,
-            email,
-            position
-        } = fields
-
-        if (!firstname ||
-            !lastname ||
-            !role || 
-            !age || 
-            !email || 
-            !position) {
-                return res.status(400).json({
-                    error: "All fields are required"
-                })
-        }
-
-        let player = new Player(fields)
-        if (files.photo) {
-            if (files.photo.size > 1000000) {
-                return res.status(400).json({
-                    error: "Image should be less than 1MB"
-                })
-            }
-            player.photo.data = fs.readFileSync(files.photo.path)
-            player.photo.contentType = files.photo.type
-        }
-
-        player.save((err, result) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                })
-            }
-            result.populate('team', '_id name')
-                .execPopulate((err, result) => {
-                    if (err) {
-                        return res.status(400).json({
-                            error: errorHandler(err)
-                        })
-                    }
-                    if(result.team) {
-                        const addPlayer = {
-                            firstname: result.firstname,
-                            lastname: result.lastname,
-                            age: result.age,
-                            _id: result._id
-                        }
-                
-                        Team.findOneAndUpdate(
-                            { _id: result.team },
-                            { $push: { "players": addPlayer }},
-                            { new: true }
-                        ).exec((err, team) => {
-                            if(err) {
-                                console.log(err)
-                                return res.status(400).json({
-                                    error: 'Invalid team'
-                                })
-                            } 
-                            console.log(team)
-                        })
-                    }
-                    res.json(result)
-                });
-        });
     });
 };
 
@@ -384,4 +375,29 @@ exports.getTeamParam = (req, res, next) => {
         req.files = files;
         next();
     });
+};
+
+exports.ageValidation = (req, res, next) => {
+    if (req.teamId) {
+        const team = req.teamId ? req.teamId : req.player.team._id  
+        const age = req.fields.age ? req.fields.age: req.player.age
+        console.log(team)
+        Team.findOne({ _id: team})
+            .exec((err, team) => {
+                console.log(err, team)
+                if (err) {
+                    return res.json({
+                        error: err
+                    });
+                }
+                console.log(team.ageGroup, age)
+                if (parseInt(team.ageGroup) < parseInt(age)) {
+                    return res.json({
+                        error: "Age validation failed"
+                    })
+                }
+                console.log('here')
+                next()
+            });
+    }
 };
