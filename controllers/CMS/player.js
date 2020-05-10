@@ -378,25 +378,34 @@ exports.getTeamParam = (req, res, next) => {
 };
 
 exports.ageValidation = (req, res, next) => {
+    let team;
     if (req.teamId) {
-        const team = req.teamId ? req.teamId : req.player.team._id  
+        team = req.teamId
+    } else {
+        if (req.player) {
+            team = req.player.team ? req.player.team._id : null
+        } else {
+            team = null
+        }
+    }
+    
+    if (team === null) {
+        // Since no team specified, Skip rest of the steps
+        next()
+    } else {
         const age = req.fields.age ? req.fields.age: req.player.age
-        console.log(team)
         Team.findOne({ _id: team})
             .exec((err, team) => {
-                console.log(err, team)
                 if (err) {
                     return res.json({
                         error: err
                     });
                 }
-                console.log(team.ageGroup, age)
                 if (parseInt(team.ageGroup) < parseInt(age)) {
                     return res.json({
                         error: "Age validation failed"
                     })
                 }
-                console.log('here')
                 next()
             });
     }
